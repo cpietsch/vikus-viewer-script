@@ -63,7 +63,7 @@ function buffer (file) {
 function convert (buffer, path, res){
 	return new Promise(function(resolve, reject) {
 		gm(buffer)
-			.resize(res, res)
+			.resize(res, res, ">")
 			.quality(60)
 			.write(path, err => {
 				if (err) console.log(err);
