@@ -12,7 +12,8 @@
   "dependencies": {
     "glob": "^7.1.2",
     "gm": "^1.23.0",
+    "imagemin-jpegtran": "^5.0.2",
     "minimist": "^1.2.0",
-    "spritesheet-js": "^1.2.6"
+    "pixi-packer": "^3.2.1"
   }
 }

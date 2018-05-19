@@ -1,3 +1,6 @@
+// christopher pietsch 2018
+// cpietsch@gmail.com
+
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -14,37 +17,36 @@ const textureRes3 = 4096;
 const inputPath = argv.i;
 const inputFormat = argv.f || 'jpg';
 
-const workPath = createPath(inputPath + '/../vv/');
+const workPath = createPath(path.join(path.dirname(inputPath), 'vv-data/'));
 const textureRes1Path = createPath(workPath + textureRes1);
 const textureRes2Path = createPath(workPath + textureRes2);
 const textureRes3Path = createPath(workPath + textureRes3);
 
+glob(inputPath + '/*.' + inputFormat, function (er, files) {
+	console.log(files);
 
-// glob(inputPath + '/*.' + inputFormat, function (er, files) {
-// 	console.log(files);
+	let sequence = Promise.resolve();
 
-// 	let sequence = Promise.resolve();
+	files.forEach(file => {
+		const basename = path.basename(file, '.' + inputFormat);
 
-// 	files.forEach(file => {
-// 		const basename = path.basename(file, '.' + inputFormat);
+		sequence = sequence
+			.then(() => {
+				return buffer(file)
+					.then(buffer => convert(buffer, textureRes3Path + '/' + basename + '.jpg', textureRes3))
+					.then(buffer => convert(buffer, textureRes2Path + '/' + basename + '.jpg', textureRes2))
+					.then(buffer => convert(buffer, textureRes1Path + '/' + basename + '.png', textureRes1))
+					.then(buffer => delete buffer)
+			})
+			.then(() => {
+				console.log('converted', file)
+			})
+	})
 
-// 		sequence = sequence
-// 			.then(() => {
-// 				return buffer(file)
-// 					.then(buffer => convert(buffer, textureRes3Path + '/' + basename + '.jpg', textureRes3))
-// 					.then(buffer => convert(buffer, textureRes2Path + '/' + basename + '.jpg', textureRes2))
-// 					.then(buffer => convert(buffer, textureRes1Path + '/' + basename + '.png', textureRes1))
-// 					.then(buffer => delete buffer)
-// 			})
-// 			.then(() => {
-// 				console.log('converted', file)
-// 			})
-// 	})
-
-// 	sequence.then((s) => {
-// 		console.log("alldone")
-// 	})
-// })
+	sequence.then((s) => {
+		console.log("alldone")
+	})
+})
 
 function createPath(path){
 	if(!fs.existsSync(path)){
