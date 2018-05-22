@@ -1,18 +1,24 @@
 {
-  "name": "vv-script",
+  "name": "vikus-viewer-scripts",
   "version": "0.1.0",
-  "description": "texture scripts for vikus-viewer",
+  "description": "preprocessing scripts for vikus-viewer",
   "author": "Christopher Pietsch <cpietsch@gmail.com>",
   "private": true,
   "main": "index.js",
   "scripts": {
+    "step1": "node index.js -i ?",
+    "step2": "node spritesheets.js -i ?",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "license": "MIT",
   "dependencies": {
     "glob": "^7.1.2",
-    "gm": "^1.23.0",
+    "jpegtran-bin": "^3.0.0",
     "imagemin-jpegtran": "^5.0.2",
+    "gm": "^1.23.0",
     "minimist": "^1.2.0",
     "pixi-packer": "^3.2.1"
   }

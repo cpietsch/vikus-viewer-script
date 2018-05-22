@@ -5,10 +5,13 @@ requirements
 - imagemagick
 - node > 8
 
-mac:
+mac
 - brew install imagemagick
 
-
+install
 - npm i
-- node index.js -i 'path'
-- node spritesheets.js -i 'path'
+
+usage
+- path is where your hires collection resides
+1. ```node index.js -i path```
+2. ```node spritesheets.js -i path```

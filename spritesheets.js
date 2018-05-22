@@ -49,5 +49,5 @@ pixiPacker.process()
 	    console.error("Error:", err.stack);
 	})
 	.then(a => {
-		console.log('done')
+		console.log('sprites generated sucessfully')
 	})

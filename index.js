@@ -9,7 +9,7 @@ const argv = require('minimist')(process.argv.slice(2));
 const execFile = require('child_process').execFile;
 const localPath = i => path.relative(process.cwd(), i)
 
-console.dir(argv);
+console.dir('starting with' argv);
 
 const textureRes1 = argv.s || 256;
 const textureRes2 = 1024;
@@ -23,6 +23,7 @@ const textureRes2Path = createPath(workPath + textureRes2);
 const textureRes3Path = createPath(workPath + textureRes3);
 
 glob(inputPath + '/*.' + inputFormat, function (er, files) {
+	console.log('found these files');
 	console.log(files);
 
 	let sequence = Promise.resolve();
@@ -44,7 +45,8 @@ glob(inputPath + '/*.' + inputFormat, function (er, files) {
 	})
 
 	sequence.then((s) => {
-		console.log("alldone")
+		console.log('image res generated successfully')
+		console.log('please process to the spritesheet script')
 	})
 })
 
