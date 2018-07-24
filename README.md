@@ -8,11 +8,11 @@ This repo helps you to create the textures and spritesheet assets which are need
 
 ## Requirements
 - imagemagick
- - mac: brew install imagemagick
- - linux: sudo apt-get install imagemagick imagemagick-doc 
+  - mac: brew install imagemagick
+  - linux: sudo apt-get install imagemagick imagemagick-doc 
 - nodejs
- - use the installer on https://nodejs.org/en/download/
- - or use nvm https://github.com/creationix/nvm
+  - use the installer on https://nodejs.org/en/download/
+  - or use nvm https://github.com/creationix/nvm
 
 
 ## Usage
