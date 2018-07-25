@@ -16,13 +16,17 @@ This script will generate the textures and spritesheet assets which are needed f
 
 Download or clone this repo and install the required node packages: 
 
-``npm i`` 
+```sh
+npm i
+``` 
 
 All your images should be in one folder (lets say "images") and named x.jpg, where x is the id of the image.
 
 To generate textures and sprites run the script like this:
 
-``IMAGEPATH=/path/to/images npm run build`` 
+```sh
+IMAGEPATH=/path/to/images npm run build
+``` 
 
 This will create a data folder for the textures (1024 and 4096) next to the original image folder as well as a sprites folder for the spritesheets.
 
