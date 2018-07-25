@@ -4,8 +4,8 @@ const argv = require('minimist')(process.argv.slice(2));
 const path = require("path");
 
 const inputPath = argv.i;
-const workPath = path.join(path.dirname(inputPath), 'vv-data');
-const pngPath = path.join(workPath, '256');
+const workPath = path.join(path.dirname(inputPath), 'data');
+const pngPath = path.join(workPath, 'tmp/256');
 const outPath = path.join(workPath, 'sprites');
 const cachePath = path.join(workPath, 'tmp');
 

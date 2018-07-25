@@ -6,9 +6,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "step1": "node index.js -i ?",
-    "step2": "node spritesheets.js -i ?",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "textures": "node textures.js",
+    "spritesheets": "node spritesheets.js",
+    "build": "npm run textures -- -i $IMAGEPATH && npm run spritesheets -- -i $IMAGEPATH"
   },
   "engines": {
     "node": ">=8"
