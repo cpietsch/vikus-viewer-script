@@ -22,13 +22,13 @@ All your images should be in one folder (lets say "images") and named x.jpg, whe
 
 To generate textures and sprites run the script like this:
 
-``node script.js -i /path/to/images`` 
+``IMAGEPATH=/path/to/images npm run build`` 
 
-This will create a vv-data folder for the textures (256, 1024 and 4096) next to the original image folder as well as a sprites folder inside vv-data for the spritesheets. 
+This will create a data folder for the textures (1024 and 4096) next to the original image folder as well as a sprites folder for the spritesheets.
 
 You are now finished in preparing the textures and spritesheets!
 
-Copy the folder 1024, 4096 and sprites inside vv-data into your /data folder of your [vikus-viewer](https://github.com/cpietsch/vikus-viewer) instance.
+Copy the folder 1024, 4096 and sprites inside data into your /data folder of your [vikus-viewer](https://github.com/cpietsch/vikus-viewer) instance. After a successfull run you can delete the tmp folder.
 
 
 ## Improvements
