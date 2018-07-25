@@ -1,6 +1,9 @@
 # vikus-viewer-script
 
-This script will generate the textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer). 
+This repo helps you to create the textures and spritesheet assets which are needed for the vikus-viewer. There are 2 scripts in this repo: *index.js* and *spritesheet.js*.
+- index.js will create textures of your collection in 3 different resolutions
+- spritesheet.js will create spritesheets of your collection
+
 
 
 ## Requirements
@@ -13,19 +16,16 @@ This script will generate the textures and spritesheet assets which are needed f
 
 
 ## Usage
+First you will need to install the required node packages via *npm i*. All your images should be in one folder (lets say "images") and named x.jpg, where x is the id of the image.
 
-Download or clone this repo and install the required node packages: 
 
-``npm i`` 
+- ``node index.js -i /user/vikus/collection/images`` 
 
-All your images should be in one folder (lets say "images") and named x.jpg, where x is the id of the image.
+This will create a vv-data folder for the textures (256, 1024 and 4096) next to the original image folder.
 
-To generate textures and sprites run the script like this:
+- ```node spritesheets.js -i /user/vikus/collection/images```
 
-``node script.js -i /path/to/images`` 
+This will create a sprites folder inside vv-data for the spritesheets.
+You are now finished in preparing the textures and spritesheets.
 
-This will create a vv-data folder for the textures (256, 1024 and 4096) next to the original image folder as well as a sprites folder inside vv-data for the spritesheets. 
-
-You are now finished in preparing the textures and spritesheets!
-
-Copy the folder 1024, 4096 and sprites inside vv-data into your /data folder of your [vikus-viewer](https://github.com/cpietsch/vikus-viewer) instance.
+Copy the folder 1024, 4096 and sprites inside vv-data into your /data folder of the vikus-viewer.
