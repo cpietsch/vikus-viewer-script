@@ -1,10 +1,9 @@
 // christopher pietsch 2018
 // cpietsch@gmail.com
-
+const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const gm = require('gm').subClass({imageMagick: true})
 const argv = require('minimist')(process.argv.slice(2));
 const execFile = require('child_process').execFile;
 const localPath = i => path.relative(process.cwd(), i)
@@ -51,24 +50,28 @@ glob(inputPath + '/*.' + inputFormat, function (er, files) {
 	})
 })
 
-function createPath(path){
-	if(!fs.existsSync(path)){
+function createPath(path) {
+	if (!fs.existsSync(path)) {
 		fs.mkdirSync(path)
 	}
 	return path;
 }
 
-function buffer (file) {
+function buffer(file) {
 	const buffer = fs.readFileSync(file)
 	return Promise.resolve(buffer)
 }
 
-function convert (buffer, path, res){
-	return new Promise(function(resolve, reject) {
-		gm(buffer)
-			.resize(res, res, ">")
-			.quality(60)
-			.write(path, err => {
+function convert(buffer, path, res) {
+	return new Promise(function (resolve, reject) {
+		sharp(buffer)
+			.resize(res, res, {
+				fit: 'inside'
+			})
+			.jpeg({
+				quality: 60
+			})
+			.toFile(path, err => {
 				if (err) console.log(err);
 				resolve(buffer)
 			})

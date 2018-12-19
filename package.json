@@ -16,10 +16,10 @@
   "license": "MIT",
   "dependencies": {
     "glob": "^7.1.2",
-    "jpegtran-bin": "^3.0.0",
-    "imagemin-jpegtran": "^5.0.2",
-    "gm": "^1.23.0",
+    "imagemin-jpegtran": "^6.0.0",
+    "jpegtran-bin": "^4.0.0",
     "minimist": "^1.2.0",
-    "pixi-packer": "^3.2.1"
+    "pixi-packer": "^3.2.1",
+    "sharp": "^0.21.1"
   }
 }
