@@ -4,9 +4,6 @@ This script will generate the textures and spritesheet assets which are needed f
 
 
 ## Requirements
-- imagemagick
-  - mac: brew install imagemagick
-  - linux: sudo apt-get install imagemagick imagemagick-doc 
 - nodejs
   - use the installer on https://nodejs.org/en/download/
   - or use nvm https://github.com/creationix/nvm
@@ -44,6 +41,3 @@ node spritesheets.js -i /path/to/images
 -s: sprite dimension
 -f: input image format
 ```
-
-## Improvements
-- replace gm with sharp https://github.com/lovell/sharp
