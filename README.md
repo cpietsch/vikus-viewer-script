@@ -35,7 +35,7 @@ Copy the folder 1024, 4096 and sprites inside data into your /data folder of you
 
 ```sh
 node textures.js -i /path/to/images -s 128 -f jpg
-node spritesheets.js -i /path/to/images
+node spritesheets.js -s 128 -i /path/to/images
 
 -i: input path
 -s: sprite dimension
