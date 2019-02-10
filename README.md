@@ -1,6 +1,6 @@
 # vikus-viewer-script
 
-This script will generate the textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer). 
+The script in /images will generate textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer). The script in /tsne will generate a TSNE layout which can be used as an alternative to the timeline-view in VIKUS Viewer.
 
 
 ## Requirements
@@ -9,9 +9,9 @@ This script will generate the textures and spritesheet assets which are needed f
   - or use nvm https://github.com/creationix/nvm
 
 
-## Usage
+## Usage image script
 
-Download or clone this repo and install the required node packages: 
+Download or clone this repo, navigate to /images and install the required node packages: 
 
 ```sh
 npm i
@@ -41,3 +41,18 @@ node spritesheets.js -s 128 -i /path/to/images
 -s: sprite dimension
 -f: input image format
 ```
+
+## Usage TSNE script
+
+Download or clone this repo, navigate to /tsne and install the required node packages: 
+
+```sh
+npm i
+```
+
+Run the TSNE script:
+```sh
+node tsne.js -i /path/to/images
+```
+
+`/path/to/images` should be pointed low res images (made with the texture script) in the 1024px resolution. After you run the script a `tsne.csv` will be generated. Copy the csv into the data folder of your VIKUS Viewer instance and add an "tsne" entry to the loader section in the config.json file pointing to the tsne.csv file. Have a look at the [Van Gogh Example config](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/config.json#L10)
