@@ -4,7 +4,7 @@
   "description": "tsne preprocessing script for vikus-viewer",
   "author": "Christopher Pietsch <cpietsch@gmail.com>",
   "private": true,
-  "main": "index.js",
+  "main": "tsne.js",
   "scripts": {},
   "engines": {
     "node": ">=10"
