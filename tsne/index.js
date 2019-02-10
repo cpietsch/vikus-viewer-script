@@ -1,0 +1,167 @@
+// christopher pietsch 2018
+// cpietsch@gmail.com
+
+const d3 = require("d3")
+const fs = require('fs');
+// const fsPromises = require('fs').promises
+var path = require("path");
+const glob = require('glob-promise');
+const localPath = i => path.relative(process.cwd(), i)
+const argv = require('minimist')(process.argv.slice(2));
+const tf = require('@tensorflow/tfjs-node');
+// const tsne = require('@tensorflow/tfjs-tsne');
+const { createCanvas, loadImage } = require('canvas')
+const TSNE = require('tsne-js');
+
+const canvas = createCanvas(224, 224)
+const ctx = canvas.getContext('2d')
+let mobilenet = null
+console.log('starting with', process.argv);
+
+const inputPath = argv.i;
+const inputFormat = argv.f || 'jpg';
+
+const saveCsv = async (data, filename) => { 
+  const csv = d3.csvFormat(data) 
+  fs.writeFileSync(filename, csv);
+}
+
+async function run() {
+ mobilenet = await require('@tensorflow-models/mobilenet').load()
+
+ const files = await glob(inputPath + '/*.' + inputFormat)
+ console.log("found files", files.length)
+ const subset = files.filter((d,i) => i < 100)
+
+ const activations = await getActivations(files)
+ console.log("done activations", activations.length)
+ // saveJson(activations)
+ // const activations = require("./activations.json")
+ const tsne = makeTsne(activations)
+ // saveCsv(tsne, "tsneRaw.csv")
+ const tsneSpaced = giveSpace(tsne)
+ // console.log(tsneSpaced)
+ saveCsv(tsneSpaced, "tsne.csv")
+ console.log("done")
+}
+
+function saveJson(data){
+  fs.writeFileSync("activations.json", JSON.stringify(data), "utf8")
+}
+
+function giveSpace(nodes){
+  console.log("running space distribution")
+  const simulation = d3.forceSimulation(nodes)
+        .force("charge", d3.forceManyBody().strength(-0.000001).distanceMin(0.001))
+        .force("center", d3.forceCenter(0,0))
+        //.on("tick", ()=> {  });
+        .stop()
+    
+  //for (var i = 0, n = Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())); i < n; ++i) {
+  for (var i = 0; i < 100; ++i) {
+    simulation.tick();
+  }
+
+  return nodes.map(d => {
+    return {
+      id: d.id,
+      x: d.x,
+      y: d.y
+    }
+  })
+}
+
+
+function makeTsne(activations){
+  const config = {
+    dim: 2,
+    perplexity: 30.0,
+    earlyExaggeration: 4.0,
+    learningRate: 100.0,
+    nIter: 1000,
+    metric: 'euclidean'
+  }
+  let model = new TSNE(config);
+
+  console.log("running tsne with", config)
+
+  model.init({
+    data: activations.map(d => d.activation),
+    type: 'dense'
+  });
+
+  let [error, iter] = model.run();
+  console.log("tsne error", error)
+  console.log("tsne iter", iter)
+
+  let outputScaled = model.getOutputScaled();
+
+  const merged = activations.map((d,i) => {
+   const coordinate = outputScaled[i]
+   return {
+     id: d.id,
+     x: coordinate[0],
+     y: coordinate[1]
+   }
+  })
+
+  return merged
+}
+
+
+async function getActivations(files){
+  const pool = []
+  for(let file of files){
+    const activation = await getActivation(file)
+    const id = path.basename(file, '.' + inputFormat);
+    if(activation){
+      pool.push({id,activation})
+      console.log(file)
+    } else {
+      console.log("error with", file)
+    }
+  }
+  return pool
+}
+
+async function getActivation(file) {
+  try {
+    const image = await loadImage(file)
+    ctx.drawImage(image, 0, 0, 224, 224)
+    const tensor = tf.fromPixels(canvas);
+    const preds = mobilenet.infer(tensor, "conv_preds");
+    tensor.dispose();
+    const result = Array.from(await preds.data());
+    preds.dispose();
+
+    return result
+  } catch (e){
+    console.log(e)
+    return null
+  }
+}
+
+run()
+
+
+// const readCsv = async path => {  
+//     let data = await fsPromises.readFile(path, 'utf8');
+//     let csv = d3.csvParse(data)
+//     return csv
+// }
+
+// for tfjs-tsne when the tfjs-core bug is fixed https://github.com/tensorflow/tfjs/issues/1092
+
+// const data = tf.randomUniform([2000,10]);
+
+// // Initialize the tsne optimizer
+// const tsneOpt = tsne.tsne(data);
+
+// // Compute a T-SNE embedding, returns a promise.
+// // Runs for 1000 iterations by default.
+// tsneOpt.compute().then(() => {
+//   // tsne.coordinate returns a *tensor* with x, y coordinates of
+//   // the embedded data.
+//   const coordinates = tsneOpt.coordinates();
+//   coordinates.print();
+// })
