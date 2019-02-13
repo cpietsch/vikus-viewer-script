@@ -8,10 +8,10 @@ var path = require("path");
 const glob = require('glob-promise');
 const localPath = i => path.relative(process.cwd(), i)
 const argv = require('minimist')(process.argv.slice(2));
-const tf = require('@tensorflow/tfjs-node');
+// const tf = require('@tensorflow/tfjs-node');
 // const tsne = require('@tensorflow/tfjs-tsne');
 const { createCanvas, loadImage } = require('canvas')
-const TSNE = require('tsne-js');
+const tsnejs = require('./tsne-lib.js');
 
 const canvas = createCanvas(224, 224)
 const ctx = canvas.getContext('2d')
@@ -36,9 +36,10 @@ async function run() {
  const activations = await getActivations(files)
  console.log("done activations", activations.length)
  // saveJson(activations)
- // const activations = require("./activations.json")
+ // let activations = require("./activations.json")
+ 
  const tsne = makeTsne(activations)
- // saveCsv(tsne, "tsneRaw.csv")
+ saveCsv(tsne, "tsneRaw.csv")
  const tsneSpaced = giveSpace(tsne)
  // console.log(tsneSpaced)
  saveCsv(tsneSpaced, "tsne.csv")
@@ -52,13 +53,15 @@ function saveJson(data){
 function giveSpace(nodes){
   console.log("running space distribution")
   const simulation = d3.forceSimulation(nodes)
-        .force("charge", d3.forceManyBody().strength(-0.000001).distanceMin(0.001))
-        .force("center", d3.forceCenter(0,0))
+      // .force("charge", d3.forceManyBody().strength(-0.0000002).distanceMin(0.001))
+       .force("charge", d3.forceManyBody().strength(-0.000001).distanceMin(0.001))
+        .force("center", d3.forceCenter(0.5,0.5))
         //.on("tick", ()=> {  });
         .stop()
     
   //for (var i = 0, n = Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())); i < n; ++i) {
   for (var i = 0; i < 100; ++i) {
+    console.log("space tick", i)
     simulation.tick();
   }
 
@@ -73,28 +76,38 @@ function giveSpace(nodes){
 
 
 function makeTsne(activations){
-  const config = {
-    dim: 2,
-    perplexity: 30.0,
-    earlyExaggeration: 4.0,
-    learningRate: 100.0,
-    nIter: 1000,
-    metric: 'euclidean'
+  const opt = {
+    epsilon: 10,    // epsilon is learning rate (10 = default)
+    perplexity: 30, // roughly how many neighbors each point influences (30 = default)
+    dim: 2 // dimensionality of the embedding (2 = default)
+  };
+
+  const tsne = new tsnejs.tSNE(opt); // create a tSNE instance
+
+  console.log("running tsne with", opt)
+
+  tsne.initDataRaw(activations.map(d => d.activation));
+
+  for(var k = 0; k < 2000; k++) {
+    console.log("tsne tick", k)
+    tsne.step()
   }
-  let model = new TSNE(config);
 
-  console.log("running tsne with", config)
+  const output = tsne.getSolution();
 
-  model.init({
-    data: activations.map(d => d.activation),
-    type: 'dense'
-  });
+  var xExtent = d3.extent(output, function (d) {
+      return d[0]
+  })
+  var yExtent = d3.extent(output, function (d) {
+      return d[1]
+  })
 
-  let [error, iter] = model.run();
-  console.log("tsne error", error)
-  console.log("tsne iter", iter)
+  var x = d3.scaleLinear().range([0, 1]).domain(xExtent)
+  var y = d3.scaleLinear().range([0, 1]).domain(yExtent)
 
-  let outputScaled = model.getOutputScaled();
+  const outputScaled = output.map(function (d) {
+      return [x(d[0]), y(d[1])]
+  })
 
   const merged = activations.map((d,i) => {
    const coordinate = outputScaled[i]
