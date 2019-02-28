@@ -42,7 +42,7 @@ node spritesheets.js -s 128 -i /path/to/images
 -f: input image format
 ```
 
-## Usage TSNE script
+## Usage t-SNE script
 
 Download or clone this repo, navigate to /tsne and install the required node packages: 
 
@@ -50,7 +50,7 @@ Download or clone this repo, navigate to /tsne and install the required node pac
 npm i
 ```
 
-Run the TSNE script:
+Run the t-SNE script:
 ```sh
 node tsne.js -i /path/to/images
 ```
