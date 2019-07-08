@@ -44,7 +44,7 @@ async function run() {
   // saveJson(activations)
   // let activations = require("./activations.json")
 
-  const tsne = makeTsne(activations)
+  const tsne = makeUMAP(activations)
   saveCsv(tsne, "umapRaw.csv")
   const tsneSpaced = giveSpace(tsne)
   // console.log(tsneSpaced)
@@ -81,7 +81,7 @@ function giveSpace(nodes) {
 }
 
 
-function makeTsne(activations) {
+function makeUMAP(activations) {
   const umap = new UMAP({
     nComponents: 2,
     nEpochs: 400,
@@ -160,24 +160,3 @@ async function getActivation(file) {
 run()
 
 
-// const readCsv = async path => {  
-//     let data = await fsPromises.readFile(path, 'utf8');
-//     let csv = d3.csvParse(data)
-//     return csv
-// }
-
-// for tfjs-tsne when the tfjs-core bug is fixed https://github.com/tensorflow/tfjs/issues/1092
-
-// const data = tf.randomUniform([2000,10]);
-
-// // Initialize the tsne optimizer
-// const tsneOpt = tsne.tsne(data);
-
-// // Compute a T-SNE embedding, returns a promise.
-// // Runs for 1000 iterations by default.
-// tsneOpt.compute().then(() => {
-//   // tsne.coordinate returns a *tensor* with x, y coordinates of
-//   // the embedded data.
-//   const coordinates = tsneOpt.coordinates();
-//   coordinates.print();
-// })
