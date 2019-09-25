@@ -12,6 +12,8 @@ const tf = require('@tensorflow/tfjs-node');
 // const tsne = require('@tensorflow/tfjs-tsne');
 const { createCanvas, loadImage } = require('canvas')
 const tsnejs = require('./tsne-lib.js');
+var ndjson = require('ndjson')
+var transformStream = ndjson.stringify();
 
 const canvas = createCanvas(224, 224)
 const ctx = canvas.getContext('2d')
@@ -26,6 +28,31 @@ const saveCsv = async (data, filename) => {
   fs.writeFileSync(filename, csv);
 }
 
+const loadActivation = () => {
+  return new Promise(function(resolve){
+    console.log("start")
+
+    const out = []
+    let i = 0
+    const r = fs.createReadStream('activations.ndjson')
+      .pipe(ndjson.parse())
+      .on('data', function(obj) {
+        // const o = { id: obj.id, activation: obj.activation.filter((d,i) => i % 10 == 0) }
+        out.push(obj)
+        // i++;
+        // if(i >= 30000) {
+        //   r.destroy()
+        //   resolve(out)
+        // } 
+      })
+      .on('end', function(obj) {
+        console.log("end")
+        resolve(out)
+      })
+  })
+}
+
+
 async function run() {
   // todo load via tf
   // const MOBILENET_MODEL_PATH ='https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json';
@@ -38,8 +65,9 @@ async function run() {
 
  const activations = await getActivations(files)
  console.log("done activations", activations.length)
- // saveJson(activations)
- // let activations = require("./activations.json")
+//  saveJson(activations)
+//  let activations = require("./activations.json")
+//  const activations = await loadActivation()
  
  const tsne = makeTsne(activations)
  saveCsv(tsne, "tsneRaw.csv")
@@ -126,17 +154,20 @@ function makeTsne(activations){
 
 
 async function getActivations(files){
+  var outputStream = transformStream.pipe( fs.createWriteStream( __dirname + "/activations.ndjson" ) );
   const pool = []
   for(let file of files){
     const activation = await getActivation(file)
     const id = path.basename(file, '.' + inputFormat);
     if(activation){
       pool.push({id,activation})
+      transformStream.write( {id,activation} );
       console.log(file)
     } else {
       console.log("error with", file)
     }
   }
+  transformStream.end();
   return pool
 }
 
