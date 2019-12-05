@@ -14,6 +14,7 @@ const {
   createCanvas,
   loadImage
 } = require('canvas')
+var ndjson = require('ndjson')
 
 const canvas = createCanvas(224, 224)
 const ctx = canvas.getContext('2d')
@@ -22,6 +23,34 @@ console.log('starting with', process.argv);
 
 const inputPath = argv.i;
 const inputFormat = argv.f || 'jpg';
+
+
+const loadActivation = () => {
+  return new Promise(function(resolve){
+    console.log("start")
+    const out = []
+    let i = 0
+    const r = fs.createReadStream('activations.ndjson')
+      .pipe(ndjson.parse())
+      .on('data', function(obj) {
+        // console.log(obj)
+        // const o = { id: obj.id, activation: obj.activation.filter((d,i) => i % 10 == 0) }
+        out.push(obj)
+        i++;
+        console.log(i)
+        if(i >= 30000) {
+          r.destroy()
+          resolve(out)
+        } 
+      })
+      .on('end', function(obj) {
+        console.log("end")
+        resolve(out)
+      })
+  })
+}
+
+
 
 const saveCsv = async (data, filename) => {
   const csv = d3.csvFormat(data)
@@ -32,17 +61,18 @@ async function run() {
   // todo load via tf
   // const MOBILENET_MODEL_PATH ='https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json';
   // mobilenet = await tf.loadLayersModel(MOBILENET_MODEL_PATH);
-  mobilenet = await require('@tensorflow-models/mobilenet').load()
+  // mobilenet = await require('@tensorflow-models/mobilenet').load()
 
-  const files = await glob(inputPath + '/*.' + inputFormat)
-  console.log(files)
-  console.log("found files", files.length)
-  const subset = files.filter((d, i) => i < 100)
+  // const files = await glob(inputPath + '/*.' + inputFormat)
+  // console.log(files)
+  // console.log("found files", files.length)
+  // const subset = files.filter((d, i) => i < 100)
 
-  const activations = await getActivations(files)
-  console.log("done activations", activations.length)
+  // const activations = await getActivations(files)
+  // console.log("done activations", activations.length)
   // saveJson(activations)
   // let activations = require("./activations.json")
+  const activations = await loadActivation()
 
   const tsne = makeUMAP(activations)
   saveCsv(tsne, "umapRaw.csv")
@@ -60,7 +90,7 @@ function giveSpace(nodes) {
   console.log("running space distribution")
   const simulation = d3.forceSimulation(nodes)
     // .force("charge", d3.forceManyBody().strength(-0.0000002).distanceMin(0.001))
-    .force("charge", d3.forceManyBody().strength(-0.000001).distanceMin(0.001))
+    .force("charge", d3.forceManyBody().strength(-0.0000001).distanceMin(0.0001))
     .force("center", d3.forceCenter(0.5, 0.5))
     //.on("tick", ()=> {  });
     .stop()
@@ -82,10 +112,11 @@ function giveSpace(nodes) {
 
 
 function makeUMAP(activations) {
+  console.log("makeUMAP")
   const umap = new UMAP({
     nComponents: 2,
-    nEpochs: 400,
-    nNeighbors: 15,
+    nEpochs: 1000,
+    nNeighbors: 20,
   });
   const nEpochs = umap.initializeFit(activations);
   for (var k = 0; k < nEpochs; k++) {
