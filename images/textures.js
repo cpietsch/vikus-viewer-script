@@ -29,7 +29,7 @@ glob(inputPath + '/*.' + inputFormat, function (er, files) {
 	let sequence = Promise.resolve();
 
 	files.forEach(file => {
-		const basename = path.basename(file, '.' + inputFormat);
+		const basename = path.parse(file).name;
 
 		sequence = sequence
 			.then(() => {
