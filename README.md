@@ -36,11 +36,12 @@ Copy the folder 1024, 4096 and sprites inside data into your /data folder of you
 ```sh
 node textures.js -i /path/to/images -s 128 -f jpg
 node spritesheets.js -s 256 -i /path/to/images
-
--i: input path
--s: sprite dimension
--f: input image format, can handle [multiple filetypes](https://github.com/isaacs/node-glob#glob-primer) like this -f "*(jpg|jpeg)"
 ```
+
+- -i: input path
+- -s: sprite dimension
+- -f: input image format, can handle [multiple filetypes](https://github.com/isaacs/node-glob#glob-primer) ``-f "*(jpg|jpeg)``
+
 
 ## Usage t-SNE/UMAP script
 
