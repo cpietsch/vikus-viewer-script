@@ -33,15 +33,18 @@ Copy the folder 1024, 4096 and sprites inside data into your /data folder of you
 
 *A note for collections of 5000+ items*: In the default configuration the script will generate sprites at the maximum dimensions of 256x256px. For faster loading time and collections with a lot of items, you should adjust the resolution of the sprites by running the scripts individually.
 
+#### Create textures
 ```sh
 node textures.js -i /path/to/images -s 128 -f jpg
-node spritesheets.js -s 256 -i /path/to/images
 ```
-
 - -i: input path
 - -s: sprite dimension
 - -f: input image format, can handle [multiple filetypes](https://github.com/isaacs/node-glob#glob-primer) ``-f "*(jpg|jpeg)``
 
+#### Create spritesheets
+```sh
+node spritesheets.js -s 256 -i /path/to/images
+```
 
 ## Usage t-SNE/UMAP script
 
