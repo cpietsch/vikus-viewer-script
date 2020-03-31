@@ -1,25 +1,35 @@
 {
   "name": "vikus-viewer-scripts",
-  "version": "0.1.0",
-  "description": "preprocessing scripts for vikus-viewer",
-  "author": "Christopher Pietsch <cpietsch@gmail.com>",
-  "private": true,
-  "main": "index.js",
-  "scripts": {
-    "textures": "node textures.js",
-    "spritesheets": "node spritesheets.js",
-    "build": "npm run textures -- -i $IMAGEPATH && npm run spritesheets -- -i $IMAGEPATH"
+  "version": "2.0.0",
+  "description": "Preprocessing scripts for vikus-viewer",
+  "author": {
+    "name": "Christopher Pietsch",
+    "url": "https://chrispie.com"
   },
+  "keywords": [
+    "vikus-viewer",
+    "vikus-viewer-script",
+    "resize"
+  ],
+  "homepage": "https://github.com/cpietsch/vikus-viewer-script",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cpietsch/vikus-viewer-script.git"
+  },
+  "bin": {
+    "textures": "bin/textures",
+    "spritesheets": "bin/spritesheets"
+  },
+  "main": "src/index.js",
+  "scripts": {},
   "engines": {
-    "node": ">=8"
+    "node": ">=10.13.0"
   },
-  "license": "MIT",
   "dependencies": {
-    "glob": "^7.1.2",
-    "imagemin-jpegtran": "^6.0.0",
-    "jpegtran-bin": "^4.0.0",
-    "minimist": "^1.2.0",
-    "pixi-packer": "^3.2.1",
-    "sharp": "^0.21.3"
+    "@mapbox/shelf-pack": "^3.2.0",
+    "glob": "^7.1.6",
+    "sharp": "^0.24.1",
+    "yargs": "^15.1.0"
   }
 }
