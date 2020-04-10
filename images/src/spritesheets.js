@@ -3,40 +3,52 @@ const path = require('path');
 const glob = require('glob');
 const ShelfPack = require('@mapbox/shelf-pack');
 
-const run = async function(inputPath, inputFormat, outputPath){
+sharp.cache(false)
 
-  const border = 1
-  const sheetDimension = 1024*2
-  const spriteDimension = 128
+exports.run = async function spriter(inputPath, outputPath, options){
 
-  const files = glob.sync(inputPath + '/*.' + inputFormat)
+  const border = options.border || 1
+  const sheetDimension = options.sheetDimension || 1024
+  const outputFormat = options.outputFormat || "png"
+  const outputQuality = options.outputQuality || 80
+  const inputFormat = options.inputFormat || "png"
+  // const spriteDimension = options.spriteDimension || 1
+
+  const files = glob.sync(inputPath + '/*.' + inputFormat)//.slice(0,40)
 
   let sizes = []
   let images = []
   let names = []
 
+  console.log("found", files.length, "files")
+
   for(i in files){
     const file = files[i]
     const basename = path.parse(file).name;
+
+    console.log(basename)
     
     try {
-      let image = await sharp(file)
-        .metadata()
+      const image = sharp(file)
+      const metadata = await image.metadata()
 
-      // let size = calculateSize(image.width, image.height, spriteDimension)
-      // sizes.push({ id: +i, w: size[0] +2*border, h: size[1] +2*border })
+      // const scaledDimension = scaleTo(metadata.width, metadata.height, 128)
+      // sizes.push({ id: +i, w: scaledDimension.width +2*border, h: scaledDimension.height +2*border })
+      // images.push(image)
 
-      sizes.push({ id: +i, w: image.width +2*border, h: image.height +2*border })
+      sizes.push({ id: +i, w: metadata.width+ 2*border, h: metadata.height+ 2*border })
       images.push(file)
+
       names.push(basename)
 
     } catch (e) {
       console.error(e, file)
     }
-    
   }
 
-  sizes.sort((a,b)=> Math.max(b.w,b.h) - Math.max(a.w,a.h))
+  console.log("packing")
+
+  //sizes.sort((a,b)=> Math.max(b.w,b.h) - Math.max(a.w,a.h))
 
   let queue = sizes.map(d => d)
   let packs = []
@@ -48,12 +60,12 @@ const run = async function(inputPath, inputFormat, outputPath){
     queue = queue.filter(d => !results.find(i => i.id === d.id))
   }
 
-  // console.log(packs)
+  console.log("creating spritesheets", packs.length)
 
   let index = 0
-  let sheets = []
   
   for(let pack of packs){
+
     const canvas = sharp({
       create: {
         width: sheetDimension,
@@ -63,7 +75,19 @@ const run = async function(inputPath, inputFormat, outputPath){
       }
     })
     
-    // sheets.push(canvas)
+    
+    // const composite = []
+    // for(let bin of pack){
+    //   console.log(bin.id)
+    //   const scaledImage = await images[bin.id].resize(128, 128, { fit: 'inside' }).toBuffer()
+    //   const elem = {
+    //     input: scaledImage,
+    //     left: bin.x+border,
+    //     top: bin.y+border
+    //   }
+    //   composite.push(elem)
+    // }
+
     const composite = pack.map(bin => {
       return {
         input: images[bin.id],
@@ -72,30 +96,22 @@ const run = async function(inputPath, inputFormat, outputPath){
       }
     })
 
-    // console.log(composite)
-    const file = outputPath + "/" + (index++) + ".png"
+    console.log("composite", composite.length)
+    
+    const file = outputPath + "/" + (index++) + "." + outputFormat
     const saved = await canvas
       .composite(composite)
+      .toFormat(outputFormat, { quality: outputQuality })
       .toFile(file)
     
     console.log(file, saved)
-
-    // for(let bin of pack){
-    //   //ctx.drawImage(files.images[bin.id], bin.x+border,bin.y+border, bin.w-2*border, bin.h-2*border)
-
-    //   yield index++ + "/"+ files.images.length;
-    // }
   }
 }
 
 
-function calculateSize(width, height, max){
-  let aspect = width < height
-  let width1 = aspect ? Math.floor(max/height*width) : max
-  let height1 = aspect ? max : Math.floor(max/width*height)
-  return [width1, height1]
+function scaleTo(_width, _height, max){
+  let aspect = _width < _height
+  let width = aspect ? Math.floor(max/_height*_width) : max
+  let height = aspect ? max : Math.floor(max/_width*_height)
+  return { width, height }
 }
-
-;(async function main() {
-  await run("/Users/assdrive/Documents/projekte/vikus-viewer/vikus-viewer-script/images/data/tmp/256", "png", "/Users/assdrive/Documents/projekte/vikus-viewer/vikus-viewer-script/images/data/sprites")
-})()
