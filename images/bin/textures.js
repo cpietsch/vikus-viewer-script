@@ -40,8 +40,8 @@ const textureRes3Path = createPath(workPath + '/' + textureRes3);
 
 
 const resizeSteps = [
-    { width: textureRes3, height: textureRes3, format: argv.outputFormat, quality: argv.outputQuality, path: textureRes3Path },
-    { width: textureRes2, height: textureRes2, format: argv.outputFormat, quality: argv.outputQuality, path: textureRes2Path },
+    //{ width: textureRes3, height: textureRes3, format: argv.outputFormat, quality: argv.outputQuality, path: textureRes3Path },
+    //{ width: textureRes2, height: textureRes2, format: argv.outputFormat, quality: argv.outputQuality, path: textureRes2Path },
     { width: textureRes1, height: textureRes1, format: "png", quality: 100, path: textureRes1Path }
   ];
 

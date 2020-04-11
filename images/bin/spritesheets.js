@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+
+// https://github.com/cpietsch/vikus-viewer-script
+// by christopher pietsch
+
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -18,7 +22,7 @@ var argv = require('yargs')
     .default('format', "png")
     .default('outputFormat', "png")
     .default('outputQuality', 80)
-    .default('outputPath', "../sprites")
+    .default('outputPath', "../../sprites")
     .default('spritesheetDimension', 2048)
     .help('h')
     .alias('h', 'help')

@@ -1,20 +1,26 @@
+// https://github.com/cpietsch/vikus-viewer-script
+
 const sharp = require('sharp');
 const path = require('path');
 const glob = require('glob');
 const ShelfPack = require('@mapbox/shelf-pack');
 
-sharp.cache(false)
+// sharp.cache(false)
+// sharp.queue.on('change', function(queueLength) {
+//   console.log('Queue contains ' + queueLength + ' task(s)');
+// });
 
 exports.run = async function spriter(inputPath, outputPath, options){
 
   const border = options.border || 1
   const sheetDimension = options.sheetDimension || 1024
   const outputFormat = options.outputFormat || "png"
-  const outputQuality = options.outputQuality || 80
+  const outputQuality = options.outputQuality || 100
   const inputFormat = options.inputFormat || "png"
+  const compositeChunkSize = 200
   // const spriteDimension = options.spriteDimension || 1
 
-  const files = glob.sync(inputPath + '/*.' + inputFormat)//.slice(0,40)
+  const files = glob.sync(inputPath + '/*.' + inputFormat)//.slice(0,100)
 
   let sizes = []
   let images = []
@@ -25,12 +31,10 @@ exports.run = async function spriter(inputPath, outputPath, options){
   for(i in files){
     const file = files[i]
     const basename = path.parse(file).name;
-
-    console.log(basename)
     
     try {
-      const image = sharp(file)
-      const metadata = await image.metadata()
+      // const image = sharp(file)
+      const metadata = await sharp(file).metadata()
 
       // const scaledDimension = scaleTo(metadata.width, metadata.height, 128)
       // sizes.push({ id: +i, w: scaledDimension.width +2*border, h: scaledDimension.height +2*border })
@@ -46,7 +50,7 @@ exports.run = async function spriter(inputPath, outputPath, options){
     }
   }
 
-  console.log("packing")
+  console.log("bin packing")
 
   //sizes.sort((a,b)=> Math.max(b.w,b.h) - Math.max(a.w,a.h))
 
@@ -65,16 +69,6 @@ exports.run = async function spriter(inputPath, outputPath, options){
   let index = 0
   
   for(let pack of packs){
-
-    const canvas = sharp({
-      create: {
-        width: sheetDimension,
-        height: sheetDimension,
-        channels: 4,
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
-      }
-    })
-    
     
     // const composite = []
     // for(let bin of pack){
@@ -88,6 +82,18 @@ exports.run = async function spriter(inputPath, outputPath, options){
     //   composite.push(elem)
     // }
 
+    // const composite = await Promise.all(pack.map(async bin => {
+    //   console.log(bin.id)
+    //   const scaledImage = await images[bin.id].resize(128, 128, { fit: 'inside' }).toBuffer()
+
+    //   return {
+    //     //input: images[bin.id],
+    //     input: scaledImage,
+    //     left: bin.x+border,
+    //     top: bin.y+border
+    //   }
+    // }))
+
     const composite = pack.map(bin => {
       return {
         input: images[bin.id],
@@ -96,18 +102,36 @@ exports.run = async function spriter(inputPath, outputPath, options){
       }
     })
 
-    console.log("composite", composite.length)
+    console.log("composing spitesheet of", composite.length)
     
+    const options = {
+        width: sheetDimension,
+        height: sheetDimension,
+        channels: 4,
+        background: { r: 0, g: 0, b: 0, alpha: 0 }
+    };
+
+    let compositeSheetBuffer = await sharp({ create: options }).raw().toBuffer()
+
+    const compositeChunks = chunk(composite, compositeChunkSize)
+    for(let compositeChunk of compositeChunks){
+      console.log("composing ", compositeChunk.length)
+      compositeSheetBuffer = await sharp(compositeSheetBuffer, { raw: options }).composite(compositeChunk).raw().toBuffer()
+    }
+
     const file = outputPath + "/" + (index++) + "." + outputFormat
-    const saved = await canvas
-      .composite(composite)
+    await sharp(compositeSheetBuffer, { raw: options })
       .toFormat(outputFormat, { quality: outputQuality })
       .toFile(file)
     
-    console.log(file, saved)
+    console.log(file)
   }
 }
 
+const chunk = (arr, size) =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  );
 
 function scaleTo(_width, _height, max){
   let aspect = _width < _height
