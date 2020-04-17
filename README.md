@@ -1,4 +1,17 @@
-# vikus-viewer-script
+# vikus-viewer-script v2
+
+There is a new version of vikus-viewer-script incoming. WIP
+
+Example:
+```sh
+npm i
+node bin/textures.js /path/to/your/images
+node bin/spritesheets.js data/tmp/256/ --outputFormat jpg
+```
+
+## OLD from here on
+
+---
 
 The script in /images will generate textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer). The script in /tsne will generate a TSNE layout which can be used as an alternative to the timeline-view in VIKUS Viewer.
 
