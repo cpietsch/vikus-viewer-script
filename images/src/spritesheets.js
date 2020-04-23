@@ -151,7 +151,7 @@ exports.run = async function spriter(inputPath, outputPath, options) {
     id: "web_web_full",
     resolution: 1,
     meta: {
-      type: "vikus-viewer",
+      type: "pixi-packer", // TODO to "vikus-viewer"
       version: "1",
       app: "https://github.com/cpietsch/vikus-viewer-script",
     },
