@@ -6,7 +6,6 @@ There is a new version of vikus-viewer-script incoming. WIP
 ```sh
 npm i
 node bin/textures.js /path/to/your/images
-node bin/spritesheets.js data/tmp/256/ --outputFormat jpg
 ```
 
 ### Texture script
@@ -30,28 +29,6 @@ Options:
 Examples:
   textures.js /path/to/large/images  create textures from source images
 ``` 
-
-### Spritesheet script
-```
-node .\bin\spritesheets.js
-Usage: spritesheets.js /path/to/images [options]
-
-Commands:
-  spritesheets.js /path/to/images  Path to input images
-
-Options:
-  --version               Show version number                          [boolean]
-  --format                Input image format (can be multiple "jpg|png")
-                                                                [default: "png"]
-  --spritesheetDimension  Dimension for generated spritesheets   [default: 2048]
-  --outputPath            Path to output folder       [default: "../../sprites"]
-  --outputFormat          Output image format                   [default: "png"]
-  --outputQuality         Output image quality (0-100)             [default: 80]
-  -h, --help              Show help                                    [boolean]
-
-Examples:
-  spritesheets.js /path/to/images  create spritesheets from source images
-```
 
 
 ## OLD from here on
