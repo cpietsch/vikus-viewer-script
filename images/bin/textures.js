@@ -7,13 +7,13 @@ const fs = require("fs");
 const path = require("path");
 const glob = require("glob");
 const cascade = require("../src/cascade");
+const sharpsheet = require("sharpsheet");
 
 var argv = require("yargs")
   .usage("Usage: $0 /path/to/large/images [options]")
   .command("/path/to/large/images", "Path to input images")
   .example("$0 /path/to/large/images", "create textures from source images")
   .demandCommand(1)
-  // .demandOption(['images'])
   .describe("format", 'Input image format (can be multiple "jpg|png")')
   .describe("spriteResolution", "Resolution of images for spritesheets")
   .describe("outputPath", "Path to output folder")
@@ -40,6 +40,8 @@ const tmpPath = createPath(workPath + "/tmp");
 const textureRes1Path = createPath(tmpPath + "/" + textureRes1);
 const textureRes2Path = createPath(workPath + "/" + textureRes2);
 const textureRes3Path = createPath(workPath + "/" + textureRes3);
+const spritesPath = createPath(workPath + "/sprites");
+
 
 const resizeSteps = [
   {
@@ -78,4 +80,12 @@ function createPath(path) {
   for await (const operation of resizer) {
     console.log(operation.progress, operation.file);
   }
+
+  const spriter = await sharpsheet(textureRes1Path + "/*.png", spritesPath, {
+    outputFormat: "jpg",
+    outputQuality: 60,
+    sheetDimension: 2048
+  });
+
+  console.log("done")
 })();

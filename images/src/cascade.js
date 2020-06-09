@@ -4,6 +4,7 @@
 const sharp = require("sharp");
 const path = require("path");
 const glob = require("glob");
+const fs = require("fs");
 
 exports.run = async function* cascade(inputPath, inputFormat, resizeSteps) {
   const files = glob.sync(inputPath + "/*." + inputFormat);
@@ -17,10 +18,14 @@ exports.run = async function* cascade(inputPath, inputFormat, resizeSteps) {
       let instance = await sharp(file);
       for (step of resizeSteps) {
         instance = instance.resize(step.width, step.height, { fit: "inside" });
+        const outFilePath = step.path + "/" + basename + "." + step.format
 
+        if(!fs.existsSync(path)) {
+          return
+        }
         const saved = await instance
           .toFormat(step.format, { quality: step.quality })
-          .toFile(step.path + "/" + basename + "." + step.format);
+          .toFile(outFilePath);
 
         log.push(saved);
       }
