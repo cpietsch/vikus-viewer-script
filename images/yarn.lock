@@ -589,10 +589,10 @@ sharp@^0.25.2:
     tar "^6.0.2"
     tunnel-agent "^0.6.0"
 
-sharpsheet@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/sharpsheet/-/sharpsheet-0.0.1.tgz#ffdaf3f5884a08b17f90d44727a4b57d1ce5167d"
-  integrity sha512-laB38hrRdvlWxHM+W+bcT2XxZgffcC8uN7qNSfKwLg4lPYrWliFG6oLHyFw7NRce8Wym2y9wpR3KJKWGjAIKlQ==
+sharpsheet@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/sharpsheet/-/sharpsheet-0.0.3.tgz#1f0a7ff541a9c85cdef6a615108de1ed08563f5b"
+  integrity sha512-9uVVB0N4k6ML48KkG+rfRVZfyOhpD1sCG5ZDC3uf9Uu+Zb1m+sfPDuLMmBY+tFZ1DA1q/Zyg8vSGzOAEEbdQxQ==
   dependencies:
     "@mapbox/shelf-pack" "^3.2.0"
     glob "^7.1.6"

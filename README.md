@@ -2,32 +2,36 @@
 
 There is a new version of vikus-viewer-script incoming. WIP
 
-### Example:
+### Examples:
 ```sh
 npm i
-node bin/textures.js /path/to/your/images
+node bin/textures.js /path/to/your/images/*.jpg # on jpg's
+node bin/textures.js /path/to/your/images/*.(jpg|jpeg|png) # on multiple formats
+node bin/textures.js /path/to/your/images/**/*.jpg # on all jpg's in subfolders
 ```
 
 ### Texture script
 ```
 node .\bin\textures.js
-Usage: textures.js /path/to/large/images [options]
+Usage: textures.js /path/to/large/images/*.jpg [options]
 
 Commands:
-  textures.js /path/to/large/images  Path to input images
+  textures.js /path/to/large/images/*.jpg  Glob to input images
 
 Options:
-  --version           Show version number                              [boolean]
-  --format            Input image format (can be multiple "jpg|png")
-                                                                [default: "jpg"]
-  --spriteResolution  Resolution of images for spritesheets       [default: 256]
-  --outputPath        Path to output folder                  [default: "./data"]
-  --outputFormat      Output image format                       [default: "jpg"]
-  --outputQuality     Output image quality (0-100)                 [default: 60]
-  -h, --help          Show help                                        [boolean]
+  --version         Show version number                                [boolean]
+  --output          Path to output folder                    [default: "./data"]
+  --skip            Don't regenerate existing textures           [default: true]
+  --textureFormat   Texture image format                        [default: "jpg"]
+  --textureQuality  Texture image quality (0-100)                  [default: 60]
+  --spriteSize      Resolution of images for spritesheets         [default: 256]
+  --spriteQuality   Quality of jpg compression for spritesheets (0-100)
+                                                                   [default: 60]
+  --spriteFormat    spritesheets format (jpg or png)            [default: "jpg"]
+  -h, --help        Show help                                          [boolean]
 
 Examples:
-  textures.js /path/to/large/images  create textures from source images
+  textures.js /path/to/large/images/*.jpg  create VV textures from jpgs
 ``` 
 
 

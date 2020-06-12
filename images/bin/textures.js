@@ -5,65 +5,68 @@
 
 const fs = require("fs");
 const path = require("path");
-const glob = require("glob");
 const cascade = require("../src/cascade");
 const sharpsheet = require("sharpsheet");
 
 var argv = require("yargs")
-  .usage("Usage: $0 /path/to/large/images [options]")
-  .command("/path/to/large/images", "Path to input images")
-  .example("$0 /path/to/large/images", "create textures from source images")
+  .usage("Usage: textures.js /path/to/large/images/*.jpg [options]")
+  .command("/path/to/large/images/*.jpg", "Glob to input images")
+  .example("textures.js /path/to/large/images/*.jpg", "create VV textures from jpgs")
   .demandCommand(1)
-  .describe("format", 'Input image format (can be multiple "jpg|png")')
-  .describe("spriteResolution", "Resolution of images for spritesheets")
-  .describe("outputPath", "Path to output folder")
-  .describe("outputFormat", "Output image format")
-  .describe("outputQuality", "Output image quality (0-100)")
-  .default("format", "jpg")
-  .default("outputFormat", "jpg")
-  .default("outputQuality", 60)
-  .default("outputPath", "./data")
-  .default("spriteResolution", 256)
+  .describe("output", "Path to output folder")
+  .default("output", "./data")
+  .describe("skip", "Don't regenerate existing textures")
+  .default("skip", true)
+  .describe("textureFormat", "Texture image format")
+  .default("textureFormat", "jpg")
+  .describe("textureQuality", "Texture image quality (0-100)")
+  .default("textureQuality", 60)
+  .describe("spriteSize", "Resolution of images for spritesheets")
+  .default("spriteSize", 256)
+  .describe("spriteQuality", "Quality of jpg compression for spritesheets (0-100)")
+  .default("spriteQuality", 60)
+  .describe("spriteFormat", "spritesheets format (jpg or png)")
+  .default("spriteFormat", "jpg")
   .help("h")
   .alias("h", "help").argv;
 
 // console.log('starting with', argv);
 
-const textureRes1 = argv.spriteResolution;
+const textureRes1 = 4096;
 const textureRes2 = 1024;
-const textureRes3 = 4096;
+const textureRes3 = argv.spriteSize;
 
 // const workPath = createPath(path.join(path.dirname(imagePath), 'data/'));
-const inputPath = argv._;
-const workPath = createPath(path.resolve(argv.outputPath));
-const tmpPath = createPath(workPath + "/tmp");
-const textureRes1Path = createPath(tmpPath + "/" + textureRes1);
-const textureRes2Path = createPath(workPath + "/" + textureRes2);
-const textureRes3Path = createPath(workPath + "/" + textureRes3);
+const input = argv._[0];
+const workPath = createPath(path.resolve(argv.output));
 const spritesPath = createPath(workPath + "/sprites");
+const tmpPath = createPath(workPath + "/tmp");
+const textureRes1Path = createPath(workPath + "/" + textureRes1);
+const textureRes2Path = createPath(workPath + "/" + textureRes2);
+const textureRes3Path = createPath(tmpPath + "/" + textureRes3);
 
 
 const resizeSteps = [
   {
-    width: textureRes3,
-    height: textureRes3,
-    format: argv.outputFormat,
-    quality: argv.outputQuality,
-    path: textureRes3Path,
+    width: textureRes1,
+    height: textureRes1,
+    format: argv.textureFormat,
+    quality: argv.textureQuality,
+    path: textureRes1Path,
   },
   {
     width: textureRes2,
     height: textureRes2,
-    format: argv.outputFormat,
-    quality: argv.outputQuality,
+    format: argv.textureFormat,
+    quality: argv.textureQuality,
     path: textureRes2Path,
   },
   {
-    width: textureRes1,
-    height: textureRes1,
+    width: textureRes3,
+    height: textureRes3,
     format: "png",
     quality: 100,
-    path: textureRes1Path,
+    path: textureRes3Path,
   },
 ];
 
@@ -73,19 +76,22 @@ function createPath(path) {
 }
 
 (async function main() {
-  console.log("\nlooking for images at ", inputPath + "/*." + argv.format);
+  console.log("\nlooking for images at ", input);
 
-  const resizer = cascade.run(inputPath, argv.format, resizeSteps);
+  const resizer = cascade.run(input, resizeSteps, { skipExisting: argv.skip });
 
+  const spritesheetFiles = []
   for await (const operation of resizer) {
     console.log(operation.progress, operation.file);
+    spritesheetFiles.push(operation.log[2])
   }
 
-  const spriter = await sharpsheet(textureRes1Path + "/*.png", spritesPath, {
-    outputFormat: "jpg",
-    outputQuality: 60,
-    sheetDimension: 2048
+  const spriter = await sharpsheet(spritesheetFiles, spritesPath, {
+    format: argv.spriteFormat,
+    quality: argv.spriteQuality,
+    dimension: 2048
   });
 
   console.log("done")
+  // console.log(files)
 })();

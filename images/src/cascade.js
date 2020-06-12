@@ -6,8 +6,15 @@ const path = require("path");
 const glob = require("glob");
 const fs = require("fs");
 
-exports.run = async function* cascade(inputPath, inputFormat, resizeSteps) {
-  const files = glob.sync(inputPath + "/*." + inputFormat);
+exports.run = async function* cascade(input, resizeSteps, options) {
+  const skipExisting = options.skipExisting || true;
+  let files = [];
+
+  if(typeof input === "string"){
+    files = glob.sync(input).slice(0,10);
+  }  else if(Array.isArray(input)){
+    files = input
+  }
 
   for (i in files) {
     const file = files[i];
@@ -20,14 +27,15 @@ exports.run = async function* cascade(inputPath, inputFormat, resizeSteps) {
         instance = instance.resize(step.width, step.height, { fit: "inside" });
         const outFilePath = step.path + "/" + basename + "." + step.format
 
-        if(!fs.existsSync(path)) {
-          return
+        if(skipExisting && fs.existsSync(outFilePath)) {
+          console.log("skipping file")
+        } else {
+          await instance
+            .toFormat(step.format, { quality: step.quality })
+            .toFile(outFilePath);
         }
-        const saved = await instance
-          .toFormat(step.format, { quality: step.quality })
-          .toFile(outFilePath);
 
-        log.push(saved);
+        log.push(outFilePath);
       }
     } catch (e) {
       console.error("there is a problem with ", file);
@@ -41,5 +49,5 @@ exports.run = async function* cascade(inputPath, inputFormat, resizeSteps) {
     };
   }
 
-  return "done";
+  return
 };
