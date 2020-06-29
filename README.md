@@ -23,7 +23,7 @@ All your images should be in one folder (lets say "images") and named x.jpg wher
 To generate textures and sprites run the script like this:
 
 ```sh
-node bin/textures.js /path/to/your/images/*.jpg
+node bin/textures.js "/path/to/your/images/*.jpg"
 ``` 
 
 This will create a data folder for the textures (1024 and 4096) as well as a sprites folder for the spritesheets inside the current folder. You can also define an output folder via the output flag: `--output /path/to/output`
@@ -37,18 +37,18 @@ Copy the folder 1024, 4096 and sprites inside data into your /data folder of you
 ### Examples:
 
 ```sh
-node bin/textures.js /path/to/your/images/*.jpg # on jpg's
-node bin/textures.js /path/to/your/images/*.(jpg|jpeg|png) # on multiple formats
-node bin/textures.js /path/to/your/images/**/*.jpg # on all jpg's in subfolders
+node bin/textures.js "/path/to/your/images/*.jpg" # on jpg's
+node bin/textures.js "/path/to/your/images/*.(jpg|jpeg|png)" # on multiple formats
+node bin/textures.js "/path/to/your/images/**/*.jpg" # on all jpg's in subfolders
 ```
 
 ### CLI commands
 ```
 node .\bin\textures.js
-Usage: textures.js /path/to/large/images/*.jpg [options]
+Usage: textures.js "/path/to/large/images/*.jpg" [options]
 
 Commands:
-  textures.js /path/to/large/images/*.jpg  Glob to input images
+  textures.js "/path/to/large/images/*.jpg"  Glob to input images
 
 Options:
   --version         Show version number                                [boolean]
@@ -63,7 +63,7 @@ Options:
   -h, --help        Show help                                          [boolean]
 
 Examples:
-  textures.js /path/to/large/images/*.jpg  create VV textures from jpgs
+  textures.js "/path/to/large/images/*.jpg"  create VV textures from jpgs
 ``` 
 
 ## Usage TSNE script

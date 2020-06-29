@@ -9,9 +9,9 @@ const cascade = require("../src/cascade");
 const sharpsheet = require("sharpsheet");
 
 var argv = require("yargs")
-  .usage("Usage: textures.js /path/to/large/images/*.jpg [options]")
-  .command("/path/to/large/images/*.jpg", "Glob to input images")
-  .example("textures.js /path/to/large/images/*.jpg", "create VV textures from jpgs")
+  .usage("Usage: textures.js \"/path/to/large/images/*.jpg\" [options]")
+  .command("\"/path/to/large/images/*.jpg\"", "Glob to input images")
+  .example("textures.js \"/path/to/large/images/*.jpg\"", "create VV textures from jpgs")
   .demandCommand(1)
   .describe("output", "Path to output folder")
   .default("output", "./data")

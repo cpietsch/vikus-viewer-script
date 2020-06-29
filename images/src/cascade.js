@@ -12,7 +12,6 @@ exports.run = async function* cascade(input, resizeSteps, options) {
 
   if(typeof input === "string"){
     files = glob.sync(input);
-    console.log(input, files)
   }  else if(Array.isArray(input)){
     files = input
   }
