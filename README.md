@@ -1,4 +1,4 @@
-# vikus-viewer-script
+# vikus-viewer-script v2.0
 
 The script in /images will generate textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer) (repo). The script in /tsne will generate a TSNE layout which can be used as an alternative to the timeline-view in VIKUS Viewer.
 
