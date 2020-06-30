@@ -8,7 +8,7 @@ var path = require("path");
 const glob = require('glob-promise');
 const localPath = i => path.relative(process.cwd(), i)
 const argv = require('minimist')(process.argv.slice(2));
-// const tf = require('@tensorflow/tfjs-node');
+const tf = require('@tensorflow/tfjs-node');
 // const tsne = require('@tensorflow/tfjs-tsne');
 const { createCanvas, loadImage } = require('canvas')
 const tsnejs = require('./tsne-lib.js');
@@ -27,6 +27,9 @@ const saveCsv = async (data, filename) => {
 }
 
 async function run() {
+  // todo load via tf
+  // const MOBILENET_MODEL_PATH ='https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json';
+  // mobilenet = await tf.loadLayersModel(MOBILENET_MODEL_PATH);
  mobilenet = await require('@tensorflow-models/mobilenet').load()
 
  const files = await glob(inputPath + '/*.' + inputFormat)
@@ -141,7 +144,7 @@ async function getActivation(file) {
   try {
     const image = await loadImage(file)
     ctx.drawImage(image, 0, 0, 224, 224)
-    const tensor = tf.fromPixels(canvas);
+    const tensor = tf.browser.fromPixels(canvas);
     const preds = mobilenet.infer(tensor, "conv_preds");
     tensor.dispose();
     const result = Array.from(await preds.data());

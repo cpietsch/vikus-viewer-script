@@ -1,6 +1,6 @@
 # vikus-viewer-script
 
-The script in /images will generate textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer). The script in /tsne will generate a TSNE layout which can be used as an alternative to the timeline-view in VIKUS Viewer.
+The script in /images will generate textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer) (repo). The script in /tsne will generate a TSNE layout which can be used as an alternative to the timeline-view in VIKUS Viewer.
 
 
 ## Requirements
@@ -36,6 +36,7 @@ Copy the folder 1024, 4096 and sprites inside data into your /data folder of you
 
 ### Examples:
 
+#### Create textures
 ```sh
 node bin/textures.js "/path/to/your/images/*.jpg" # on jpg's
 node bin/textures.js "/path/to/your/images/*.(jpg|jpeg|png)" # on multiple formats
@@ -43,7 +44,7 @@ node bin/textures.js "/path/to/your/images/**/*.jpg" # on all jpg's in subfolder
 ```
 
 ### CLI commands
-```
+```sh
 node .\bin\textures.js
 Usage: textures.js "/path/to/large/images/*.jpg" [options]
 
@@ -66,17 +67,25 @@ Examples:
   textures.js "/path/to/large/images/*.jpg"  create VV textures from jpgs
 ``` 
 
-## Usage TSNE script
+## Usage t-SNE/UMAP script
 
-Download or clone this repo, navigate to /tsne and install the required node packages: 
+As an alternative to the temporal view, you can create a t-SNE layout based on image similarity. The script creates a tsne.csv which can be put next to the data.csv in the /data folder. Image similarity is calculated via the [imagenet activation logit](https://beta.observablehq.com/@cpietsch/imagenet-activation-logit) and then run throught t-SNE or UMAP. An additional spacing step ensures no overlaying images in the distribution.
+
+Download or clone this repo, navigate to /similarity and install the required node packages: 
 
 ```sh
 npm i
 ```
 
-Run the TSNE script:
+Run the t-SNE script:
 ```sh
 node tsne.js -i /path/to/images
+```
+
+Alternatively Run the UMAP script UMAP is an experimental new version of way to do something similar to the T-SNE projection:
+
+```sh
+node umap.js -i /path/to/images
 ```
 
 `/path/to/images` should be pointed low res images (made with the texture script) in the 1024px resolution. After you run the script a `tsne.csv` will be generated. Copy the csv into the data folder of your VIKUS Viewer instance and add an "tsne" entry to the loader section in the config.json file pointing to the tsne.csv file. Have a look at the [Van Gogh Example config](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/config.json#L10)
