@@ -11,7 +11,7 @@ const argv = require('minimist')(process.argv.slice(2));
 const tf = require('@tensorflow/tfjs-node');
 // const tsne = require('@tensorflow/tfjs-tsne');
 const { createCanvas, loadImage } = require('canvas')
-const tsnejs = require('./tsne-lib.js');
+const tsnejs = require('./lib/tsne-lib.js');
 
 const canvas = createCanvas(224, 224)
 const ctx = canvas.getContext('2d')

@@ -11,20 +11,29 @@ The script in /images will generate textures and spritesheet assets which are ne
 
 ## Usage image script
 
-Download or clone this repo, navigate to /images and install the required node packages: 
+Install the script as a command line tool without the need of cloning / downloading:
 
 ```sh
-cd /images
-npm i
-``` 
+npm install -g vikus-viewer-script
+```
+
+Alternativly you can download or clone this repo and install the required node packages: 
+
+```sh
+git clone https://github.com/cpietsch/vikus-viewer-script
+cd vikus-viewer-script
+npm install
+```
+Note: You can run the script via `node bin/textures` instead of `vikus-viewer-script` if you have cloned it.
+
 
 All your images should be in one folder (lets say "images") and named x.jpg where x is the id of the image corresponding to the id field in data.csv
 
 To generate textures and sprites run the script like this:
 
 ```sh
-node bin/textures.js "/path/to/your/images/*.jpg"
-``` 
+vikus-viewer-script "/path/to/your/images/*.jpg"
+```
 
 This will create a data folder for the textures (1024 and 4096) as well as a sprites folder for the spritesheets inside the current folder. You can also define an output folder via the output flag: `--output /path/to/output`
 
@@ -38,18 +47,17 @@ Copy the folder 1024, 4096 and sprites inside data into your /data folder of you
 
 #### Create textures
 ```sh
-node bin/textures.js "/path/to/your/images/*.jpg" # on jpg's
-node bin/textures.js "/path/to/your/images/*.(jpg|jpeg|png)" # on multiple formats
-node bin/textures.js "/path/to/your/images/**/*.jpg" # on all jpg's in subfolders
+vikus-viewer-script "/path/to/your/images/*.jpg" # on jpg's
+vikus-viewer-script "/path/to/your/images/*.(jpg|jpeg|png)" # on multiple formats
+vikus-viewer-script "/path/to/your/images/**/*.jpg" # on all jpg's in subfolders
 ```
 
 ### CLI commands
 ```sh
-node .\bin\textures.js
-Usage: textures.js "/path/to/large/images/*.jpg" [options]
+Usage: vikus-viewer-script "/path/to/large/images/*.jpg" [options]
 
 Commands:
-  textures.js "/path/to/large/images/*.jpg"  Glob to input images
+  vikus-viewer-script "/path/to/large/images/*.jpg"  Glob to input images
 
 Options:
   --version         Show version number                                [boolean]
@@ -59,12 +67,14 @@ Options:
   --textureQuality  Texture image quality (0-100)                  [default: 60]
   --spriteSize      Resolution of images for spritesheets         [default: 256]
   --spriteQuality   Quality of jpg compression for spritesheets (0-100)
-                                                                   [default: 60]
+                                                                   [default: 70]
   --spriteFormat    spritesheets format (jpg or png)            [default: "jpg"]
+  --largeSize       resolution of full sized images              [default: 4096]
+  --mediumSize      resolution of images loaded on the fly       [default: 1024]
   -h, --help        Show help                                          [boolean]
 
 Examples:
-  textures.js "/path/to/large/images/*.jpg"  create VV textures from jpgs
+  vikus-viewer-script "/path/to/large/images/*.jpg"  create VV textures from jpgs
 ``` 
 
 ## Usage t-SNE/UMAP script
@@ -74,6 +84,7 @@ As an alternative to the temporal view, you can create a t-SNE layout based on i
 Download or clone this repo, navigate to /similarity and install the required node packages: 
 
 ```sh
+cd /similarity
 npm i
 ```
 

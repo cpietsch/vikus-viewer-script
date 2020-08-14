@@ -1,6 +1,6 @@
 {
   "name": "vikus-viewer-scripts",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Preprocessing scripts for vikus-viewer",
   "author": {
     "name": "Christopher Pietsch",
@@ -18,8 +18,7 @@
     "url": "https://github.com/cpietsch/vikus-viewer-script.git"
   },
   "bin": {
-    "textures": "bin/textures",
-    "spritesheets": "bin/spritesheets"
+    "vikus-viewer-script": "bin/textures"
   },
   "main": "src/index.js",
   "scripts": {},
