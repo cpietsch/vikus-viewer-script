@@ -8,10 +8,10 @@ var path = require("path");
 const glob = require('glob-promise');
 const localPath = i => path.relative(process.cwd(), i)
 const argv = require('minimist')(process.argv.slice(2));
-const tf = require('@tensorflow/tfjs-node');
+const tf = require('@tensorflow/tfjs');
 // const tsne = require('@tensorflow/tfjs-tsne');
 const { createCanvas, loadImage } = require('canvas')
-const tsnejs = require('./lib/tsne-lib.js');
+const tsnejs = require('./lib/tsne.js');
 
 const canvas = createCanvas(224, 224)
 const ctx = canvas.getContext('2d')
