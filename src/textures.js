@@ -58,7 +58,8 @@ exports.run = async function textures(inputPath, options) {
   const spritesheetFiles = []
   for await (const operation of resizer) {
     console.log(operation.progress, operation.file);
-    spritesheetFiles.push(operation.log[2])
+    if (operation.log[2]) spritesheetFiles.push(operation.log[2])
+    else console.error("Error with file", operation.file);
   }
 
   const spriter = await sharpsheet(spritesheetFiles, spritesPath, {
