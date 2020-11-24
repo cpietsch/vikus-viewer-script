@@ -37,6 +37,8 @@ vikus-viewer-script "/path/to/your/images/*.jpg"
 
 This will create a data folder for the textures (1024 and 4096) as well as a sprites folder for the spritesheets inside the current folder. You can also define an output folder via the output flag: `--output /path/to/output`
 
+If your source images are in multiple formats or have multiple file extensions you can use a [glob primer](https://www.npmjs.com/package/glob#glob-primer) like this: `vikus-viewer-script "/path/to/your/images/*.+(jpg|jpeg|png)"`
+
 You are now finished in preparing the textures and spritesheets!
 
 Copy the folder 1024, 4096 and sprites inside data into your /data folder of your [vikus-viewer](https://github.com/cpietsch/vikus-viewer) instance. After a successful run you can delete the tmp folder.
@@ -48,7 +50,7 @@ Copy the folder 1024, 4096 and sprites inside data into your /data folder of you
 #### Create textures
 ```sh
 vikus-viewer-script "/path/to/your/images/*.jpg" # on jpg's
-vikus-viewer-script "/path/to/your/images/*.(jpg|jpeg|png)" # on multiple formats
+vikus-viewer-script "/path/to/your/images/*.+(jpg|jpeg|png)" # on multiple formats
 vikus-viewer-script "/path/to/your/images/**/*.jpg" # on all jpg's in subfolders
 ```
 
