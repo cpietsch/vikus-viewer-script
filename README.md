@@ -17,7 +17,7 @@ Install the script as a command line tool without the need of cloning / download
 npm install -g vikus-viewer-script
 ```
 
-Alternativly you can download or clone this repo and install the required node packages: 
+Alternatively you can download or clone this repo and install the required node packages: 
 
 ```sh
 git clone https://github.com/cpietsch/vikus-viewer-script
