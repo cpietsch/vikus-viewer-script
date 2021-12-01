@@ -1,6 +1,3 @@
-// https://github.com/cpietsch/vikus-viewer-script
-// by Christopher Pietsch 2020
-
 const sharp = require("sharp");
 const path = require("path");
 const glob = require("glob");

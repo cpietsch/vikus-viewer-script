@@ -1,6 +1,3 @@
-// https://github.com/cpietsch/vikus-viewer-script
-// by Christopher Pietsch 2020
-
 const fs = require("fs");
 const path = require("path");
 const cascade = require("./cascade.js");
