@@ -23,7 +23,7 @@
   "main": "src/index.js",
   "scripts": {},
   "engines": {
-    "node": ">=17.0.0"
+    "node": ">=16.13.1"
   },
   "dependencies": {
     "@mapbox/shelf-pack": "^3.2.0",
