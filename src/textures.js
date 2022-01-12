@@ -60,8 +60,8 @@ exports.run = async function textures(inputPath, options) {
   }
 
   const spriter = await sharpsheet(spritesheetFiles, spritesPath, {
-    format: spriteFormat,
-    quality: spriteQuality,
+    outputFormat: spriteFormat,
+    outputQuality: spriteQuality,
     dimension: 2048
   });
 
