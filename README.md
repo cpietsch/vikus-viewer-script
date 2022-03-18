@@ -81,7 +81,7 @@ Examples:
 
 ## Usage t-SNE/UMAP script
 
-As an alternative to the temporal view, you can create a t-SNE layout based on image similarity. The script creates a tsne.csv which can be put next to the data.csv in the /data folder. Image similarity is calculated via the [imagenet activation logit](https://beta.observablehq.com/@cpietsch/imagenet-activation-logit) and then run throught t-SNE or UMAP. An additional spacing step ensures no overlaying images in the distribution.
+As an alternative to the temporal view, you can create a t-SNE layout based on image similarity. The script creates a tsne.csv which can be put next to the data.csv in the /data folder. Image similarity is calculated via the [mobilenet activation logit](https://beta.observablehq.com/@cpietsch/imagenet-activation-logit) and then run throught t-SNE or UMAP. An additional spacing step ensures no overlaying images in the distribution.
 
 Download or clone this repo, navigate to /similarity and install the required node packages: 
 
