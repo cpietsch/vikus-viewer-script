@@ -35,11 +35,6 @@ const saveCsv = async (data, filename) => {
   fs.writeFileSync(filename, csv);
 }
 
-const saveCsv = async (data, filename) => { 
-  const csv = d3.csvFormat(data) 
-  fs.writeFileSync(filename, csv);
-}
-
 async function run() {
   // todo load via tf
   // const MOBILENET_MODEL_PATH ='https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json';
