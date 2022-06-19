@@ -90,6 +90,8 @@ cd /similarity
 npm i
 ```
 
+Add the `-t` flag to the script to use the much faster tfjs-node implementation instead of the default tfjs.
+
 Run the t-SNE script:
 ```sh
 node tsne.js -i /path/to/images

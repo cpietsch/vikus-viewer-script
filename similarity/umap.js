@@ -8,7 +8,8 @@ var path = require("path");
 const glob = require('glob-promise');
 const localPath = i => path.relative(process.cwd(), i)
 const argv = require('minimist')(process.argv.slice(2));
-const tf = require('@tensorflow/tfjs-node');
+const tfVersion = argv.t ? 'tfjs-node' : 'tfjs'
+const tf = require("@tensorflow/" + tfVersion);
 const UMAP = require("umap-js").UMAP
 const {
   createCanvas,
