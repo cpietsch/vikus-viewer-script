@@ -7,7 +7,7 @@
   "main": "tsne.js",
   "scripts": {},
   "engines": {
-    "node": ">=10"
+    "node": ">=16.15.1"
   },
   "license": "MIT",
   "dependencies": {
