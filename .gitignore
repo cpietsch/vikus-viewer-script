@@ -3,3 +3,4 @@ test
 .DS_Store
 package-lock.json
 images/data
+data
