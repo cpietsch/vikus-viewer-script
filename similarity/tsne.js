@@ -8,7 +8,7 @@ var path = require("path");
 const glob = require('glob-promise');
 const localPath = i => path.relative(process.cwd(), i)
 const argv = require('minimist')(process.argv.slice(2));
-const tf = require('@tensorflow/tfjs');
+// const tf = require('@tensorflow/tfjs');
 // const tsne = require('@tensorflow/tfjs-tsne');
 const { createCanvas, loadImage } = require('canvas')
 const tsnejs = require('./lib/tsne.js');
@@ -20,6 +20,15 @@ console.log('starting with', process.argv);
 
 const inputPath = argv.i;
 const inputFormat = argv.f || 'jpg';
+const useTfjsnode = argv.t || false;
+
+var tf
+if(useTfjsnode) {
+  tf = require('@tensorflow/tfjs-node');
+}
+else {
+  tf = require('@tensorflow/tfjs');
+}
 
 const saveCsv = async (data, filename) => { 
   const csv = d3.csvFormat(data) 

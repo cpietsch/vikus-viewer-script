@@ -1,6 +1,6 @@
 {
   "name": "vikus-viewer-tsne",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "tsne preprocessing script for vikus-viewer",
   "author": "Christopher Pietsch <cpietsch@gmail.com>",
   "private": true,
