@@ -1,6 +1,3 @@
-// christopher pietsch 2018
-// cpietsch@gmail.com
-
 const d3 = require("d3")
 const fs = require('fs');
 // const fsPromises = require('fs').promises
@@ -8,7 +5,6 @@ var path = require("path");
 const glob = require('glob-promise');
 const localPath = i => path.relative(process.cwd(), i)
 const argv = require('minimist')(process.argv.slice(2));
-// const tf = require('@tensorflow/tfjs');
 // const tsne = require('@tensorflow/tfjs-tsne');
 const { createCanvas, loadImage } = require('canvas')
 const tsnejs = require('./lib/tsne.js');

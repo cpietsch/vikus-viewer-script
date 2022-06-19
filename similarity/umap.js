@@ -1,6 +1,3 @@
-// christopher pietsch 2018
-// cpietsch@gmail.com
-
 const d3 = require("d3")
 const fs = require('fs');
 // const fsPromises = require('fs').promises
