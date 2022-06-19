@@ -30,9 +30,13 @@ async function run() {
   // mobilenet = await tf.loadLayersModel(MOBILENET_MODEL_PATH);
   mobilenet = await require('@tensorflow-models/mobilenet').load()
 
-  const files = await glob(inputPath + '/*.' + inputFormat)
+  let files = await glob(inputPath + '/*.' + inputFormat)
   console.log("found files", files.length)
-  const subset = files.filter((d, i) => i < 100)
+  //files = files.filter((d, i) => i < 100)
+  if (files.length === 0) {
+    console.log("no files found")
+    return
+  }
 
   const activations = await getActivations(files)
   console.log("done activations", activations.length)
