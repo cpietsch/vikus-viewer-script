@@ -1,6 +1,6 @@
 {
   "name": "vikus-viewer-script",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Preprocessing scripts for vikus-viewer",
   "author": {
     "name": "Christopher Pietsch",
