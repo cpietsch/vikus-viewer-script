@@ -56,8 +56,11 @@ exports.run = async function textures(inputPath, options) {
   let spritesheetFiles = [];
   for await (const operation of resizer) {
     console.log(operation.progress, operation.file);
-    if (operation.log[2]) spritesheetFiles.push(operation.log[2]);
-    else console.error("Error with file", operation.file);
+    if (!skipTextures && operation.log[2]) {
+      spritesheetFiles.push(operation.log[2]);
+    } else if (skipTextures && operation.log[0]) {
+      spritesheetFiles.push(operation.log[0]);
+    } else console.error("Error with file", operation.file);
   }
 
   if (multipe) {
