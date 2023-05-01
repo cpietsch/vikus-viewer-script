@@ -4,6 +4,7 @@ const cascade = require("./cascade.js");
 const sharpsheet = require("sharpsheet");
 
 exports.run = async function textures(inputPath, options) {
+  const skipTextures = options.skipTextures || false;
   const textureRes1 = options.largeSize || 4096;
   const textureRes2 = options.mediumSize || 1024;
   const textureRes3 = options.spriteSize || 128;
@@ -19,20 +20,20 @@ exports.run = async function textures(inputPath, options) {
   const spritesPath = createPath(workPath + "/sprites");
   const tmpPath = createPath(workPath + "/tmp");
   const textureRes1Path =
-    textureRes1 && createPath(workPath + "/" + textureRes1);
+    !skipTextures && createPath(workPath + "/" + textureRes1);
   const textureRes2Path =
-    textureRes2 && createPath(workPath + "/" + textureRes2);
+    !skipTextures && createPath(workPath + "/" + textureRes2);
   const textureRes3Path = createPath(tmpPath + "/" + textureRes3);
 
   const resizeSteps = [
-    textureRes1 && {
+    !skipTextures && {
       width: textureRes1,
       height: textureRes1,
       format: textureFormat,
       quality: textureQuality,
       path: textureRes1Path,
     },
-    textureRes2 && {
+    !skipTextures && {
       width: textureRes2,
       height: textureRes2,
       format: textureFormat,
@@ -46,7 +47,7 @@ exports.run = async function textures(inputPath, options) {
       quality: 100,
       path: textureRes3Path,
     },
-  ];
+  ].filter((s) => s);
 
   console.log("\nlooking for images at ", inputPath);
 

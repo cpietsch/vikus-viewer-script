@@ -29,13 +29,12 @@ const argv = require("yargs")
   .default("spriteQuality", 70)
   .describe("spriteFormat", "spritesheets format (jpg or png)")
   .default("spriteFormat", "jpg")
-  .describe("largeSize", "resolution of full sized images, (0 to disable)")
+  .describe("largeSize", "resolution of full sized images")
   .default("largeSize", 4096)
-  .describe(
-    "mediumSize",
-    "resolution of images loaded on the fly, (0 to disable)"
-  )
+  .describe("mediumSize", "resolution of images loaded on the fly")
   .default("mediumSize", 1024)
+  .describe("skipTextures", "skip texture generation, only make spritesheets")
+  .default("skipTextures", false)
   .help("h")
   .alias("h", "help").argv;
 
