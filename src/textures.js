@@ -4,10 +4,9 @@ const cascade = require("./cascade.js");
 const sharpsheet = require("sharpsheet");
 
 exports.run = async function textures(inputPath, options) {
-
   const textureRes1 = options.largeSize || 4096;
   const textureRes2 = options.mediumSize || 1024;
-  const textureRes3 = options.spriteSize || 256;
+  const textureRes3 = options.spriteSize || 128;
   const outputPath = options.output || "./data";
   const textureFormat = options.textureFormat || "jpg";
   const textureQuality = options.textureQuality || 60;
@@ -19,20 +18,21 @@ exports.run = async function textures(inputPath, options) {
   const workPath = createPath(path.resolve(outputPath));
   const spritesPath = createPath(workPath + "/sprites");
   const tmpPath = createPath(workPath + "/tmp");
-  const textureRes1Path = createPath(workPath + "/" + textureRes1);
-  const textureRes2Path = createPath(workPath + "/" + textureRes2);
+  const textureRes1Path =
+    textureRes1 && createPath(workPath + "/" + textureRes1);
+  const textureRes2Path =
+    textureRes2 && createPath(workPath + "/" + textureRes2);
   const textureRes3Path = createPath(tmpPath + "/" + textureRes3);
 
-
   const resizeSteps = [
-    {
+    textureRes1 && {
       width: textureRes1,
       height: textureRes1,
       format: textureFormat,
       quality: textureQuality,
       path: textureRes1Path,
     },
-    {
+    textureRes2 && {
       width: textureRes2,
       height: textureRes2,
       format: textureFormat,
@@ -52,26 +52,28 @@ exports.run = async function textures(inputPath, options) {
 
   const resizer = cascade.run(inputPath, resizeSteps, { skipExisting });
 
-  let spritesheetFiles = []
+  let spritesheetFiles = [];
   for await (const operation of resizer) {
     console.log(operation.progress, operation.file);
-    if (operation.log[2]) spritesheetFiles.push(operation.log[2])
+    if (operation.log[2]) spritesheetFiles.push(operation.log[2]);
     else console.error("Error with file", operation.file);
   }
 
-  if(multipe){
+  if (multipe) {
     // this only works if the _ is only used fpr multipage files
-    spritesheetFiles = spritesheetFiles.filter(file => file.indexOf("_") == -1)
+    spritesheetFiles = spritesheetFiles.filter(
+      (file) => file.indexOf("_") == -1
+    );
   }
 
   const spriter = await sharpsheet(spritesheetFiles, spritesPath, {
     outputFormat: spriteFormat,
     outputQuality: spriteQuality,
-    dimension: 2048
+    dimension: 2048,
   });
 
   console.log("done");
-}
+};
 
 function createPath(path) {
   if (!fs.existsSync(path)) fs.mkdirSync(path);

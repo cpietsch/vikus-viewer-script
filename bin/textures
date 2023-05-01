@@ -5,9 +5,12 @@
 const textures = require("../src/textures.js");
 
 const argv = require("yargs")
-  .usage("Usage: vikus-viewer-script \"/path/to/large/images/*.jpg\" [options]")
-  .command("\"/path/to/large/images/*.jpg\"", "Glob to input images")
-  .example("vikus-viewer-script \"/path/to/large/images/*.jpg\"", "create VV textures from jpgs")
+  .usage('Usage: vikus-viewer-script "/path/to/large/images/*.jpg" [options]')
+  .command('"/path/to/large/images/*.jpg"', "Glob to input images")
+  .example(
+    'vikus-viewer-script "/path/to/large/images/*.jpg"',
+    "create VV textures from jpgs"
+  )
   .demandCommand(1)
   .describe("output", "Path to output folder")
   .default("output", "./data")
@@ -18,14 +21,20 @@ const argv = require("yargs")
   .describe("textureQuality", "Texture image quality (0-100)")
   .default("textureQuality", 60)
   .describe("spriteSize", "Resolution of images for spritesheets")
-  .default("spriteSize", 256)
-  .describe("spriteQuality", "Quality of jpg compression for spritesheets (0-100)")
+  .default("spriteSize", 128)
+  .describe(
+    "spriteQuality",
+    "Quality of jpg compression for spritesheets (0-100)"
+  )
   .default("spriteQuality", 70)
   .describe("spriteFormat", "spritesheets format (jpg or png)")
   .default("spriteFormat", "jpg")
-  .describe("largeSize", "resolution of full sized images")
+  .describe("largeSize", "resolution of full sized images, (0 to disable)")
   .default("largeSize", 4096)
-  .describe("mediumSize", "resolution of images loaded on the fly")
+  .describe(
+    "mediumSize",
+    "resolution of images loaded on the fly, (0 to disable)"
+  )
   .default("mediumSize", 1024)
   .help("h")
   .alias("h", "help").argv;
@@ -35,5 +44,5 @@ const argv = require("yargs")
 const inputPath = argv._[0];
 
 (async function main() {
-  await textures.run(inputPath, argv)
+  await textures.run(inputPath, argv);
 })();
