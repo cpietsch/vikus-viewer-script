@@ -68,7 +68,7 @@ Options:
   --skip            Don't regenerate existing textures           [default: true]
   --textureFormat   Texture image format                        [default: "jpg"]
   --textureQuality  Texture image quality (0-100)                  [default: 60]
-  --spriteSize      Resolution of images for spritesheets         [default: 256]
+  --spriteSize      Resolution of images for spritesheets         [default: 128]
   --spriteQuality   Quality of jpg compression for spritesheets (0-100)
                                                                    [default: 70]
   --spriteFormat    spritesheets format (jpg or png)            [default: "jpg"]
