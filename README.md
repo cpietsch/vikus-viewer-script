@@ -1,6 +1,12 @@
-# vikus-viewer-script v2.0
+# vikus-viewer-script
 
-The script in /images will generate textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer) (repo). The script in /tsne will generate a TSNE layout which can be used as an alternative to the timeline-view in VIKUS Viewer.
+The script will generate textures and spritesheet assets which are needed for the [vikus-viewer](https://github.com/cpietsch/vikus-viewer).
+
+## /similarity-js
+Those files are for generating a TSNE layout which can be used as an alternative to the timeline-view in VIKUS Viewer. More on how to use this script can be found [below](https://github.com/cpietsch/vikus-viewer-script#usage-t-sneumap-script). Since the script is written in JavaScript its capability is limited to smaller collections. For larger collections you can use the python script below.
+
+## /similarity-python
+Here you will find a small python notebook which can be used to generate a similarity layout using UMAP. You can run this notebook on [Google Colab](https://colab.research.google.com/) or on your local machine.
 
 ## Requirements
 
@@ -89,7 +95,7 @@ As an alternative to the temporal view, you can create a t-SNE layout based on i
 Download or clone this repo, navigate to /similarity and install the required node packages:
 
 ```sh
-cd /similarity
+cd /similarity-js
 npm i
 ```
 
