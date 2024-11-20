@@ -1,9 +1,9 @@
-const sharp = require("sharp");
-const path = require("path");
-const glob = require("glob");
-const fs = require("fs");
+import sharp from "sharp";
+import path from "path";
+import { glob } from 'glob';
+import fs from "fs";
 
-exports.run = async function* cascade(input, resizeSteps, options) {
+export default async function* cascade(input, resizeSteps, options) {
   const skipExisting = options.skipExisting || true;
   let files = [];
 
@@ -13,14 +13,16 @@ exports.run = async function* cascade(input, resizeSteps, options) {
     files = input
   }
 
-  for (i in files) {
+  console.log("found ", files);
+
+  for (let i in files) {
     const file = files[i];
     const basename = path.parse(file).name;
     const log = [];
 
     try {
       let instance = await sharp(file);
-      for (step of resizeSteps) {
+      for (let step of resizeSteps) {
         instance = instance.resize(step.width, step.height, { fit: "inside" });
         const outFilePath = step.path + "/" + basename + "." + step.format
 

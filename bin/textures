@@ -2,9 +2,12 @@
 
 // https://github.com/cpietsch/vikus-viewer-script
 // by Christopher Pietsch 2020
-const textures = require("../src/textures.js");
+import textures from "../src/textures.js";
 
-const argv = require("yargs")
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+
+const argv = yargs(hideBin(process.argv))
   .usage('Usage: vikus-viewer-script "/path/to/large/images/*.jpg" [options]')
   .command('"/path/to/large/images/*.jpg"', "Glob to input images")
   .example(
@@ -43,5 +46,5 @@ const argv = require("yargs")
 const inputPath = argv._[0];
 
 (async function main() {
-  await textures.run(inputPath, argv);
+  await textures(inputPath, argv);
 })();

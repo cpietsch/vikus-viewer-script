@@ -1,9 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const cascade = require("./cascade.js");
-const sharpsheet = require("sharpsheet");
+import fs from "fs";
+import path from "path";
+import cascade from "./cascade.js";
+import sharpsheet from "sharpsheet/src/sharpsheet.js";
 
-exports.run = async function textures(inputPath, options) {
+export default async function textures(inputPath, options) {
   const skipTextures = options.skipTextures || false;
   const textureRes1 = options.largeSize || 4096;
   const textureRes2 = options.mediumSize || 1024;
@@ -51,7 +51,7 @@ exports.run = async function textures(inputPath, options) {
 
   console.log("\nlooking for images at ", inputPath);
 
-  const resizer = cascade.run(inputPath, resizeSteps, { skipExisting });
+  const resizer = cascade(inputPath, resizeSteps, { skipExisting });
 
   let spritesheetFiles = [];
   for await (const operation of resizer) {
