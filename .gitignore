@@ -5,6 +5,7 @@ node_modules/
 data/
 tmp/
 test/
+test-output/
 
 # OS files
 .DS_Store

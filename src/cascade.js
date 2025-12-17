@@ -1,42 +1,50 @@
 import sharp from "sharp";
 import path from "path";
 import { glob } from 'glob';
-import fs from "fs";
+import fs from "fs/promises";
 
 export default async function* cascade(input, resizeSteps, options = {}) {
+  console.log("cascade options:", options);
   const skipExisting = options.skipExisting !== undefined ? options.skipExisting : true;
+  const verbose = options.verbose !== undefined ? options.verbose : true;
   let files = [];
 
-  if(typeof input === "string"){
+  console.log("skipExisting is bool:", skipExisting, typeof skipExisting);
+
+  if (typeof input === "string") {
     files = glob.sync(input);
-  } else if(Array.isArray(input)){
+  } else if (Array.isArray(input)) {
     files = input;
   }
 
   if (files.length === 0) {
-    console.error(`\n❌ No files found matching: ${input}`);
-    console.error('\nTips:');
-    console.error('  • Make sure to quote the glob pattern: vikus-viewer-script "/path/to/images/*.jpg"');
-    console.error('  • Check that the path exists and contains images');
-    console.error('  • For multiple formats use: "/path/to/images/*.+(jpg|png)"\n');
+    console.error(`No files found: ${input} - have you used "/path/to/images/*.jpg" ?`);
     return;
   }
 
-  console.log(`\n✓ Found ${files.length} files`);
+  if (verbose) {
+    console.log(`Found ${files.length} files`);
+  }
 
-  for (let i in files) {
-    const file = files[i];
+  const totalFiles = files.length;
+  for (const [index, file] of files.entries()) {
     const basename = path.parse(file).name;
     const log = [];
 
     try {
       let instance = await sharp(file);
-      for (let step of resizeSteps) {
+      const metadata = await instance.metadata();
+      if(verbose) {
+        console.log(`Processing ${file} (${metadata.width}x${metadata.height})`);
+      }
+      
+      for (const step of resizeSteps) {
         instance = instance.resize(step.width, step.height, { fit: "inside" });
-        const outFilePath = step.path + "/" + basename + "." + step.format
+        const outFilePath = path.join(step.path, `${basename}.${step.format}`);
 
-        if(skipExisting && fs.existsSync(outFilePath)) {
-          console.log("skipping file")
+        const exists = await fs.access(outFilePath).then(()=>true,()=>false)
+        if (skipExisting && exists) {
+          if (verbose) console.log(`  skip: ${path.basename(outFilePath)}`);
         } else {
           await instance
             .toFormat(step.format, { quality: step.quality })
@@ -49,13 +57,15 @@ export default async function* cascade(input, resizeSteps, options = {}) {
       console.error("there is a problem with ", file);
       console.error(e);
     }
+    
+    const progress = (((index + 1) / totalFiles) * 100).toFixed(1);
     yield {
       file,
       basename,
-      progress: ((i / files.length) * 100).toFixed(2) + "%",
+      progress: `${progress}%`,
+      current: index + 1,
+      total: totalFiles,
       log,
     };
   }
-
-  return
 };
