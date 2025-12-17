@@ -1,6 +1,6 @@
 {
   "name": "vikus-viewer-script",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Preprocessing scripts for vikus-viewer",
   "author": {
     "name": "Christopher Pietsch",
@@ -9,7 +9,10 @@
   "keywords": [
     "vikus-viewer",
     "vikus-viewer-script",
-    "resize"
+    "resize",
+    "spritesheet",
+    "textures",
+    "image-processing"
   ],
   "homepage": "https://github.com/cpietsch/vikus-viewer-script",
   "license": "ISC",
@@ -18,16 +21,31 @@
     "url": "https://github.com/cpietsch/vikus-viewer-script.git"
   },
   "bin": {
-    "vikus-viewer-script": "bin/textures.js"
+    "vikus-viewer-script": "bin/textures.js",
+    "vvs": "bin/textures.js"
   },
   "main": "src/index.js",
-  "scripts": {},
+  "exports": {
+    ".": "./src/index.js",
+    "./textures": "./src/textures.js",
+    "./cascade": "./src/cascade.js"
+  },
+  "scripts": {
+    "start": "node bin/textures.js",
+    "test": "echo \"No tests yet\" && exit 0",
+    "prepublishOnly": "node -e \"require('./src/index.js')\""
+  },
   "engines": {
     "node": ">=20.3.0"
   },
   "type": "module",
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
   "dependencies": {
-    "sharpsheet": "^0.1.2",
+    "sharpsheet": "^0.1.5",
     "glob": "^11.0.0",
     "sharp": "^0.33.5",
     "yargs": "^17.7.2"

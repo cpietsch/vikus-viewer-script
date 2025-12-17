@@ -3,17 +3,26 @@ import path from "path";
 import { glob } from 'glob';
 import fs from "fs";
 
-export default async function* cascade(input, resizeSteps, options) {
-  const skipExisting = options.skipExisting || true;
+export default async function* cascade(input, resizeSteps, options = {}) {
+  const skipExisting = options.skipExisting !== undefined ? options.skipExisting : true;
   let files = [];
 
   if(typeof input === "string"){
     files = glob.sync(input);
-  }  else if(Array.isArray(input)){
-    files = input
+  } else if(Array.isArray(input)){
+    files = input;
   }
 
-  console.log("found ", files);
+  if (files.length === 0) {
+    console.error(`\n❌ No files found matching: ${input}`);
+    console.error('\nTips:');
+    console.error('  • Make sure to quote the glob pattern: vikus-viewer-script "/path/to/images/*.jpg"');
+    console.error('  • Check that the path exists and contains images');
+    console.error('  • For multiple formats use: "/path/to/images/*.+(jpg|png)"\n');
+    return;
+  }
+
+  console.log(`\n✓ Found ${files.length} files`);
 
   for (let i in files) {
     const file = files[i];

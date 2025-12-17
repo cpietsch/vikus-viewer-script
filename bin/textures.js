@@ -41,10 +41,16 @@ const argv = yargs(hideBin(process.argv))
   .help("h")
   .alias("h", "help").argv;
 
-// console.log('starting with', argv);
-
 const inputPath = argv._[0];
 
 (async function main() {
-  await textures(inputPath, argv);
+  try {
+    await textures(inputPath, argv);
+  } catch (error) {
+    console.error('\n❌ Error:', error.message);
+    if (process.env.DEBUG) {
+      console.error(error.stack);
+    }
+    process.exit(1);
+  }
 })();

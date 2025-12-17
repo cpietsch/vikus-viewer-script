@@ -1,6 +1,17 @@
-node_modules
-test
+# Dependencies
+node_modules/
+
+# Output directories
+data/
+tmp/
+test/
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Lock files (optional - can be removed if you want to track these)
 package-lock.json
-images/data
-data

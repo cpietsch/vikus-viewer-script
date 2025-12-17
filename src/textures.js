@@ -14,7 +14,7 @@ export default async function textures(inputPath, options) {
   const skipExisting = options.skip || false;
   const spriteFormat = options.spriteFormat || "jpg";
   const spriteQuality = options.spriteQuality || 70;
-  const multipe = options.multipe || false;
+  const multiple = options.multiple || false;
 
   const workPath = createPath(path.resolve(outputPath));
   const spritesPath = createPath(workPath + "/sprites");
@@ -63,8 +63,8 @@ export default async function textures(inputPath, options) {
     } else console.error("Error with file", operation.file);
   }
 
-  if (multipe) {
-    // this only works if the _ is only used fpr multipage files
+  if (multiple) {
+    // this only works if the _ is only used for multipage files
     spritesheetFiles = spritesheetFiles.filter(
       (file) => file.indexOf("_") == -1
     );
