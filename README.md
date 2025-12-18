@@ -16,13 +16,19 @@ Here you will find a small python notebook which can be used to generate a simil
 
 ## Usage image script
 
-Install the script as a command line tool without the need of cloning / downloading:
+The quickest way to run the script is using `npx` (no installation required):
+
+```sh
+npx vikus-viewer-script "/path/to/your/images/*.jpg"
+```
+
+Alternatively, install the script as a command line tool globally:
 
 ```sh
 npm install -g vikus-viewer-script
 ```
 
-Alternatively you can download or clone this repo and install the required node packages:
+Or you can download or clone this repo and install the required node packages:
 
 ```sh
 git clone https://github.com/cpietsch/vikus-viewer-script
@@ -30,7 +36,7 @@ cd vikus-viewer-script
 npm install
 ```
 
-Note: You can run the script via `node bin/textures` instead of `vikus-viewer-script` if you have cloned it.
+Note: You can run the script via `node bin/textures.js` instead of `vikus-viewer-script` if you have cloned it.
 
 All your images should be in one folder (lets say "images") and named x.jpg where x is the id of the image corresponding to the id field in data.csv
 
@@ -48,9 +54,9 @@ You are now finished in preparing the textures and spritesheets!
 
 Copy the folder 1024, 4096 and sprites inside data into your /data folder of your [vikus-viewer](https://github.com/cpietsch/vikus-viewer) instance. After a successful run you can delete the tmp folder.
 
-_A note for collections of 5000+ items_: In the default configuration the script will generate sprites at the maximum dimensions of 256x256px. For faster loading time and collections with a lot of items, you should adjust the resolution of the sprites by running changing the `--spriteSize` flag to e.g. 90.
+_A note for collections of 5000+ items_: In the default configuration the script will generate sprites at the maximum dimensions of 128x128px. For faster loading time and collections with a lot of items, you should adjust the resolution of the sprites by using the `--spriteSize` flag to e.g. 90.
 
-### Examples:
+### Examples
 
 #### Create textures
 
@@ -58,6 +64,7 @@ _A note for collections of 5000+ items_: In the default configuration the script
 vikus-viewer-script "/path/to/your/images/*.jpg" # on jpg's
 vikus-viewer-script "/path/to/your/images/*.+(jpg|jpeg|png)" # on multiple formats
 vikus-viewer-script "/path/to/your/images/**/*.jpg" # on all jpg's in subfolders
+npx vikus-viewer-script "/path/to/your/images/*.jpg" # using npx without installation
 ```
 
 ### CLI commands
@@ -72,20 +79,27 @@ Options:
   --version         Show version number                                [boolean]
   --output          Path to output folder                    [default: "./data"]
   --skip            Don't regenerate existing textures           [default: true]
-  --textureFormat   Texture image format                        [default: "jpg"]
+  --textureFormat   Texture image format
+              [choices: "jpg", "jpeg", "png", "webp", "gif", "avif"] [default: "jpg"]
   --textureQuality  Texture image quality (0-100)                  [default: 60]
   --spriteSize      Resolution of images for spritesheets         [default: 128]
   --spriteQuality   Quality of jpg compression for spritesheets (0-100)
                                                                    [default: 70]
-  --spriteFormat    spritesheets format (jpg or png)            [default: "jpg"]
-  --largeSize       resolution of full sized images              [default: 4096]
-  --mediumSize      resolution of images loaded on the fly       [default: 1024]
-  --skipTextures    skip texture generation, only make spritesheets
+  --spriteFormat    Spritesheets format
+              [choices: "jpg", "jpeg", "png", "webp", "gif", "avif"] [default: "jpg"]
+  --largeSize       Resolution of full sized images              [default: 4096]
+  --mediumSize      Resolution of images loaded on the fly       [default: 1024]
+  --skipTextures    Skip texture generation, only make spritesheets
                                                                 [default: false]
+  --verbose         Show detailed output                               [boolean]
+  -q, --quiet       Minimal output                            [default: false]
   -h, --help        Show help                                          [boolean]
 
 Examples:
   vikus-viewer-script "/path/to/large/images/*.jpg"  create VV textures from jpgs
+  vikus-viewer-script "/images/*.jpg" --quiet        minimal output
+
+For more info, visit https://github.com/cpietsch/vikus-viewer-script
 ```
 
 ## Usage t-SNE/UMAP script
@@ -113,5 +127,5 @@ Alternatively Run the UMAP script UMAP is an experimental new version of way to 
 node umap.js -i /path/to/images
 ```
 
-`/path/to/images` should be pointed low res images (made with the texture script) in the 1024px resolution. After you run the script a `tsne.csv` will be generated. Copy the csv into the data folder of your VIKUS Viewer instance. Then you can add layouts or remove the lime layout in the [loader.layout](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/config.json#L10) section of the config.json.
-To add yout custom layout add this entry: `{"title": "Similarity", "url": "tsne.csv" }`
+`/path/to/images` should be pointed to low res images (made with the texture script) in the 1024px resolution. After you run the script a `tsne.csv` will be generated. Copy the csv into the data folder of your VIKUS Viewer instance. Then you can add layouts or remove the timeline layout in the [loader.layout](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/config.json#L10) section of the config.json.
+To add your custom layout add this entry: `{"title": "Similarity", "url": "tsne.csv" }`
