@@ -13,6 +13,3 @@ Thumbs.db
 
 # Logs
 *.log
-
-# Lock files (optional - can be removed if you want to track these)
-package-lock.json
