@@ -18,7 +18,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cpietsch/vikus-viewer-script.git"
+    "url": "git+https://github.com/cpietsch/vikus-viewer-script.git"
   },
   "bin": {
     "vikus-viewer-script": "bin/textures.js",
