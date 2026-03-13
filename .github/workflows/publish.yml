@@ -9,17 +9,21 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
+      # Required for OIDC authentication and provenance
       contents: read
-      id-token: write
+      id-token: write 
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          #registry-url: 'https://registry.npmjs.org'
+          # Notice: registry-url is intentionally omitted so 
+          # setup-node does not generate an .npmrc file that 
+          # expects a NODE_AUTH_TOKEN.
 
       - name: Install dependencies
         run: npm ci
